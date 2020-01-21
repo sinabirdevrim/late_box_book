@@ -27,6 +27,10 @@ class UserLoadedState extends UserState {
 }
 
 class UserErrorState extends UserState {
+  String errorMessage;
+
+  UserErrorState(this.errorMessage);
+
   @override
   // TODO: implement props
   List<Object> get props => [];

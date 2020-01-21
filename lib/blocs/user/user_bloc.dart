@@ -19,7 +19,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           event.userName, event.password);
       yield UserLoadedState(result.data);
       if (result.errorMessage.isNotEmpty) {
-        yield UserErrorState();
+        yield UserErrorState(result.errorMessage);
       }
     }
   }

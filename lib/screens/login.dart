@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/screens/register.dart';
 import 'package:late_box_book/widgets/login/login_form.dart';
+import 'package:rich_alert/rich_alert.dart';
 
 class LoginPage extends StatelessWidget {
   String _email, _password;
@@ -17,13 +18,12 @@ class LoginPage extends StatelessWidget {
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
 
     final _userBloc = BlocProvider.of<UserBloc>(context);
-    String test="Not Login";
 
     return BlocBuilder(
       bloc: _userBloc,
       builder: (_, UserState state) {
-        if(state is UserLoadedState){
-          test = state.userModel.email;
+        if (state is UserErrorState) {
+          debugPrint(state.errorMessage);
         }
 
         return Scaffold(
@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
-                        child: Text("LateBox\nBook $test",
+                        child: Text("LateBox\nBook",
                             style: TextStyle(
                                 letterSpacing: .6,
                                 fontWeight: FontWeight.bold,
@@ -87,11 +87,7 @@ class LoginPage extends StatelessWidget {
                                   _formSubmit(_userBloc);
                                 },
                                 child: Center(
-                                  child: Text("SignIn",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          letterSpacing: 1.0)),
+                                  child: loginBtn(state),
                                 ),
                               ),
                             ),
@@ -132,8 +128,21 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  Widget loginBtn(UserState state) {
+    debugPrint(state.toString());
+    if (state is UserLoadingState) {
+      return CircularProgressIndicator();
+    } else {
+      return Text("SignIn",
+          style:
+              TextStyle(color: Colors.white, fontSize: 18, letterSpacing: 1.0));
+    }
+  }
+
   _formSubmit(UserBloc userBloc) {
-    _formKey.currentState.save();
-    userBloc.add(LoginUserEvent(_email, _password));
+    if (!(userBloc.state is UserLoadingState)) {
+      _formKey.currentState.save();
+      userBloc.add(LoginUserEvent(_email, _password));
+    }
   }
 }
