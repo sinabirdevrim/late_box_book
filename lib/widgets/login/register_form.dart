@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class RegisterFormCard extends StatefulWidget {
   @override
@@ -42,55 +43,32 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),
               ),
-              Text("Username",
-                  style:
-                      TextStyle(fontSize: ScreenUtil.getInstance().setSp(26))),
-              TextFormField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.cyan),
-                    ),
-                    hintText: "username",
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              LBTextFormField(
+                hintText: "Username",
                 onSaved: (String value) {
                   _email = value;
                 },
+                labelText: "username",
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),
               ),
-              Text("PassWord",
-                  style:
-                      TextStyle(fontSize: ScreenUtil.getInstance().setSp(26))),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    hintText: "Password",
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.cyan),
-                    ),
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              LBTextFormField(
+                hintText: "Password",
                 onSaved: (String value) {
                   _password = value;
                 },
+                labelText: "PassWord",
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),
               ),
-              Text("RePassWord",
-                  style:
-                      TextStyle(fontSize: ScreenUtil.getInstance().setSp(26))),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    hintText: "RePassword",
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.cyan),
-                    ),
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              LBTextFormField(
+                hintText: "RePassword",
                 onSaved: (String value) {
-                  _password = value;
+                  _passwordRepat = value;
                 },
+                labelText: "RePassWord",
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(35),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class LoginFormCard extends StatefulWidget {
   Function(String _email) funcEmail;
   Function(String _password) funcPassword;
   GlobalKey<FormState> _formKey;
 
-  LoginFormCard(this.funcEmail,this.funcPassword, this._formKey);
+  LoginFormCard(this.funcEmail, this.funcPassword, this._formKey);
 
   @override
   _LoginFormCardState createState() => _LoginFormCardState();
@@ -45,37 +46,22 @@ class _LoginFormCardState extends State<LoginFormCard> {
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),
               ),
-              Text("Username",
-                  style:
-                      TextStyle(fontSize: ScreenUtil.getInstance().setSp(26))),
-              TextFormField(
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.cyan),
-                    ),
-                    hintText: "username",
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              LBTextFormField(
+                hintText: "username",
                 onSaved: (String value) {
                   widget.funcEmail(value);
                 },
+                labelText: "Username",
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(30),
               ),
-              Text("PassWord",
-                  style:
-                      TextStyle(fontSize: ScreenUtil.getInstance().setSp(26))),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    hintText: "Password",
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.cyan),
-                    ),
-                    hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
+              LBTextFormField(
+                hintText: "Password",
                 onSaved: (String value) {
                   widget.funcPassword(value);
                 },
+                labelText: "PassWord",
               ),
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(35),

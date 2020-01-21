@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/screens/register.dart';
 import 'package:late_box_book/widgets/login/login_form.dart';
 
@@ -15,9 +17,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.instance = ScreenUtil.getInstance()
+      ..init(context);
     ScreenUtil.instance =
         ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
+
+    final _userBloc = BlocProvider.of<UserBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.transparent,
                           child: InkWell(
                             onTap: () {
-                              _formSubmit();
+                              _formSubmit(_userBloc);
                             },
                             child: Center(
                               child: Text("SignIn",
@@ -121,8 +126,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _formSubmit() {
+  _formSubmit(UserBloc userBloc) {
     _formKey.currentState.save();
-
+    userBloc.add(LoginUserEvent(_email, _password));
   }
 }
