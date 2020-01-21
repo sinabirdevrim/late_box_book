@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginFormCard extends StatefulWidget {
-  Function(String _email, String _password) formInfo;
+  Function(String _email) funcEmail;
+  Function(String _password) funcPassword;
   GlobalKey<FormState> _formKey;
 
-  LoginFormCard(this.formInfo, this._formKey);
+  LoginFormCard(this.funcEmail,this.funcPassword, this._formKey);
 
   @override
   _LoginFormCardState createState() => _LoginFormCardState();
 }
 
 class _LoginFormCardState extends State<LoginFormCard> {
-  String _email, _password;
-
   @override
   Widget build(BuildContext context) {
     return new Container(
@@ -57,7 +56,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
                     hintText: "username",
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
                 onSaved: (String value) {
-                  _email = value;
+                  widget.funcEmail(value);
                 },
               ),
               SizedBox(
@@ -75,8 +74,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
                     ),
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 12.0)),
                 onSaved: (String value) {
-                  _password = value;
-                  widget.formInfo(_email, _password);
+                  widget.funcPassword(value);
                 },
               ),
               SizedBox(

@@ -10,6 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String _email, _password;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -47,8 +48,10 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: ScreenUtil.getInstance().setHeight(20),
               ),
-              LoginFormCard((_email, _password) {
-                _loginUser(_email, _password);
+              LoginFormCard((_email) {
+                this._email = _email;
+              }, (_password) {
+                this._password = _password;
               }, _formKey),
               SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
               Row(
@@ -120,9 +123,6 @@ class _LoginPageState extends State<LoginPage> {
 
   _formSubmit() {
     _formKey.currentState.save();
-  }
 
-  _loginUser(String email, String password) {
-    //Bloc gidicek
   }
 }

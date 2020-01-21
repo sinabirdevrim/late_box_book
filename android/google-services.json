@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1017545959381",
+    "firebase_url": "https://lateboxbook.firebaseio.com",
+    "project_id": "lateboxbook",
+    "storage_bucket": "lateboxbook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017545959381:android:93902d580b10e9fcbc7f5c",
+        "android_client_info": {
+          "package_name": "com.onerevolutionstudio.lateboxbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017545959381-830iadog8cqg8lb20t24mar1ma7h8iri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIoXP_JrtVGCpA6YaQ5LJHNZGI-jlHbOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017545959381-830iadog8cqg8lb20t24mar1ma7h8iri.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
