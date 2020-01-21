@@ -5,7 +5,10 @@ import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/screens/login.dart';
 import 'package:late_box_book/util/const.dart';
 
+import 'common/locator.dart';
+
 void main() {
+  setupLocator();
   runApp(MyApp());
 }
 
@@ -33,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         title: Constants.appName,
         theme: Constants.lightTheme,
         home: BlocProvider<UserBloc>(
-          create: (_) => UserBloc(),
+          create: (context) => UserBloc(),
           child: LoginPage(),
         ));
   }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:late_box_book/model/user_model.dart';
 
 abstract class UserState extends Equatable {
   const UserState();
@@ -9,22 +10,23 @@ class InitialUserState extends UserState {
   List<Object> get props => [];
 }
 
-
-class UserLoadingState extends UserState{
+class UserLoadingState extends UserState {
   @override
   // TODO: implement props
   List<Object> get props => [];
 }
 
+class UserLoadedState extends UserState {
+  UserModel userModel;
 
-class UserLoadedState extends UserState{
+  UserLoadedState(this.userModel);
+
   @override
   // TODO: implement props
-  List<Object> get props => [];
+  List<Object> get props => [userModel];
 }
 
-
-class UserErrorState extends UserState{
+class UserErrorState extends UserState {
   @override
   // TODO: implement props
   List<Object> get props => [];

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
@@ -14,9 +15,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> mapEventToState(UserEvent event) async* {
     if (event is LoginUserEvent) {
       yield UserLoadingState();
-      var test = await _userRepository.createUserWithEmailAndPassword(
+      var result = await _userRepository.createUserWithEmailAndPassword(
           event.userName, event.password);
-      yield UserLoadedState();
+      yield UserLoadedState(result.data);
+      if (result.errorMessage.isNotEmpty) {
+        yield UserErrorState();
+      }
     }
   }
 }
