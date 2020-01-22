@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:late_box_book/widgets/login/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -24,14 +23,14 @@ class RegisterPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 RegisterFormCard(),
-                SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
                       child: InkWell(
                         child: Container(
-                          height: ScreenUtil.getInstance().setHeight(100),
+                          height: 50,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(colors: [
                                 Color(0xFF17ead9),

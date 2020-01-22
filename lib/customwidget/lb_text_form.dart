@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LBTextFormField extends StatelessWidget {
   final String hintText;
   final FormFieldSetter<String> onSaved;
   final String labelText;
+  final bool obscureText;
 
-  const LBTextFormField({Key key, this.hintText, this.onSaved, this.labelText})
+  const LBTextFormField(
+      {Key key,
+      this.hintText,
+      this.onSaved,
+      this.labelText,
+      this.obscureText = false})
       : super(key: key);
 
   @override
@@ -15,8 +20,9 @@ class LBTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(labelText,
-            style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(26))),
+            style: TextStyle(fontSize: 12)),
         TextFormField(
+          obscureText: obscureText,
           decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.cyan),

@@ -15,11 +15,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> mapEventToState(UserEvent event) async* {
     if (event is LoginUserEvent) {
       yield UserLoadingState();
-      var result = await _userRepository.createUserWithEmailAndPassword(
+      var result = await _userRepository.signInWithEmailAndPassword(
           event.userName, event.password);
-      yield UserLoadedState(result.data);
       if (result.errorMessage.isNotEmpty) {
         yield UserErrorState(result.errorMessage);
+      } else {
+        yield UserLoadedState(result.data);
+      }
+    } else if (event is RegisterUserEvent) {
+      yield UserLoadingState();
+      var result = await _userRepository.createUserWithEmailAndPassword(
+          event.userName, event.password);
+      debugPrint(result.data.email);
+      if (result.errorMessage.isNotEmpty) {
+        yield UserErrorState(result.errorMessage);
+      } else {
+        yield UserLoadedState(result.data);
       }
     }
   }

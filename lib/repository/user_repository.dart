@@ -10,7 +10,15 @@ class UserRepository {
 
   Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
       String email, String password) async {
-    return await _firebaseAuthService.createUserWithEmailandPassword(
+    return await _firebaseAuthService.createUserWithEmailAndPassword(
         email, password);
   }
+
+  Future<BaseModel<UserModel>> signInWithEmailAndPassword(
+      String email, String password) async {
+    return await _firebaseAuthService.signInWithEmailAndPassword(
+        email, password);
+  }
+
+
 }

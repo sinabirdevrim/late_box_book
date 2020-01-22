@@ -1,4 +1,4 @@
-package com.onerevolutionstudio.late_box_book
+package com.onerevolutionstudio.lateboxbook
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

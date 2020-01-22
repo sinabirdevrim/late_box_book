@@ -6,19 +6,42 @@ import 'package:late_box_book/model/user_model.dart';
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<UserModel> signInWithEmailAndPassword(
-      String email, String password) async {}
+  Future<BaseModel<UserModel>> signInWithEmailAndPassword(
+      String email, String password) async {
+    var response = BaseModel<UserModel>();
+    try {
+      AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      if(result!=null){
+        response.data = UserModel(result.user.providerId, result.user.displayName,
+            result.user.photoUrl, result.user.email, result.user.phoneNumber);
+      }else{
+        response.errorMessage = "Hata";
+      }
+    } catch (e) {
+      response.errorMessage = e.message.toString();
+    }
+    return response;
+  }
 
-  Future<BaseModel<UserModel>> createUserWithEmailandPassword(
+  Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
       String email, String password) async {
     var response = BaseModel<UserModel>();
     try {
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      response.data = UserModel(result.user.providerId, result.user.displayName,
-          result.user.photoUrl, result.user.email, result.user.phoneNumber);
+      if (result != null) {
+        response.data = UserModel(
+            result.user.providerId,
+            result.user.displayName,
+            result.user.photoUrl,
+            result.user.email,
+            result.user.phoneNumber);
+      } else {
+        response.errorMessage = "Hata";
+      }
     } catch (e) {
-      response.errorMessage = e.toString();
+      response.errorMessage = e.message.toString();
     }
     return response;
   }

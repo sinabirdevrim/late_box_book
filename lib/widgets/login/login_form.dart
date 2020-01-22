@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class LoginFormCard extends StatefulWidget {
@@ -18,7 +17,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
   Widget build(BuildContext context) {
     return new Container(
       width: double.infinity,
-      height: ScreenUtil.getInstance().setHeight(490),
+      height: 250,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
@@ -41,10 +40,10 @@ class _LoginFormCardState extends State<LoginFormCard> {
             children: <Widget>[
               Text("Login",
                   style: TextStyle(
-                      fontSize: ScreenUtil.getInstance().setSp(45),
+                      fontSize: 25,
                       letterSpacing: .6)),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(30),
+                height: 15,
               ),
               LBTextFormField(
                 hintText: "username",
@@ -54,9 +53,10 @@ class _LoginFormCardState extends State<LoginFormCard> {
                 labelText: "Username",
               ),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(30),
+                height: 15,
               ),
               LBTextFormField(
+                obscureText: true,
                 hintText: "Password",
                 onSaved: (String value) {
                   widget.funcPassword(value);
@@ -64,7 +64,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
                 labelText: "PassWord",
               ),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(35),
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -73,7 +73,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
                     "Forgot Password?",
                     style: TextStyle(
                         color: Colors.blue,
-                        fontSize: ScreenUtil.getInstance().setSp(28)),
+                        fontSize: 14),
                   )
                 ],
               )

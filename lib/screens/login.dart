@@ -1,35 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
+import 'package:late_box_book/customwidget/platform_specific_alert_dialog.dart';
 import 'package:late_box_book/screens/register.dart';
 import 'package:late_box_book/widgets/login/login_form.dart';
-import 'package:rich_alert/rich_alert.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   String _email, _password;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    ScreenUtil.instance =
-        ScreenUtil(width: 750, height: 1334, allowFontScaling: true);
-
     final _userBloc = BlocProvider.of<UserBloc>(context);
-
-    return BlocBuilder(
-      bloc: _userBloc,
-      builder: (_, UserState state) {
-        if (state is UserErrorState) {
-          debugPrint(state.errorMessage);
-        }
-
-        return Scaffold(
-          backgroundColor: Colors.white,
-          resizeToAvoidBottomPadding: true,
-          body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomPadding: true,
+      body: SingleChildScrollView(
+        child: BlocListener(
+            bloc: _userBloc,
+            listener: (context, state) {
+              if (state is UserErrorState) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  PlatformSpecificAlertDialog(
+                    header: "Login Error",
+                    title: state.errorMessage,
+                    doneText: 'Done',
+                  ).show(context);
+                });
+              }
+            },
             child: Padding(
               padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 50.0),
               child: Column(
@@ -42,7 +47,7 @@ class LoginPage extends StatelessWidget {
                             style: TextStyle(
                                 letterSpacing: .6,
                                 fontWeight: FontWeight.bold,
-                                fontSize: ScreenUtil.getInstance().setSp(45))),
+                                fontSize: 25)),
                       ),
                       Expanded(
                         flex: 2,
@@ -53,51 +58,57 @@ class LoginPage extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(20),
+                    height: 10,
                   ),
                   LoginFormCard((_email) {
                     this._email = _email;
                   }, (_password) {
                     this._password = _password;
                   }, _formKey),
-                  SizedBox(height: ScreenUtil.getInstance().setHeight(40)),
+                  SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Expanded(
-                        child: InkWell(
-                          child: Container(
-                            height: ScreenUtil.getInstance().setHeight(100),
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(colors: [
-                                  Color(0xFF17ead9),
-                                  Color(0xFF6078ea)
-                                ]),
-                                borderRadius: BorderRadius.circular(6.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Color(0xFF6078ea).withOpacity(.3),
-                                      offset: Offset(0.0, 8.0),
-                                      blurRadius: 8.0)
-                                ]),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  _formSubmit(_userBloc);
-                                },
-                                child: Center(
-                                  child: loginBtn(state),
+                      BlocBuilder(
+                        bloc: _userBloc,
+                        builder: (_, UserState state) {
+                          return Expanded(
+                            child: InkWell(
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: [
+                                      Color(0xFF17ead9),
+                                      Color(0xFF6078ea)
+                                    ]),
+                                    borderRadius: BorderRadius.circular(6.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color:
+                                              Color(0xFF6078ea).withOpacity(.3),
+                                          offset: Offset(0.0, 8.0),
+                                          blurRadius: 8.0)
+                                    ]),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _formSubmit(_userBloc);
+                                    },
+                                    child: Center(
+                                      child: loginBtn(_userBloc.state),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       )
                     ],
                   ),
                   SizedBox(
-                    height: ScreenUtil.getInstance().setHeight(40),
+                    height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -121,10 +132,8 @@ class LoginPage extends StatelessWidget {
                   )
                 ],
               ),
-            ),
-          ),
-        );
-      },
+            )),
+      ),
     );
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class RegisterFormCard extends StatefulWidget {
@@ -15,7 +14,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
 
     return new Container(
       width: double.infinity,
-      height: ScreenUtil.getInstance().setHeight(600),
+      height: 300,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
@@ -38,10 +37,10 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
             children: <Widget>[
               Text("Register",
                   style: TextStyle(
-                      fontSize: ScreenUtil.getInstance().setSp(45),
+                      fontSize: 25,
                       letterSpacing: .6)),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(30),
+                height: 15,
               ),
               LBTextFormField(
                 hintText: "Username",
@@ -51,9 +50,10 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 labelText: "username",
               ),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(30),
+                height: 15,
               ),
               LBTextFormField(
+                obscureText: true,
                 hintText: "Password",
                 onSaved: (String value) {
                   _password = value;
@@ -61,9 +61,10 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 labelText: "PassWord",
               ),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(30),
+                height: 15,
               ),
               LBTextFormField(
+                obscureText: true,
                 hintText: "RePassword",
                 onSaved: (String value) {
                   _passwordRepat = value;
@@ -71,7 +72,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 labelText: "RePassWord",
               ),
               SizedBox(
-                height: ScreenUtil.getInstance().setHeight(35),
+                height: 20,
               ),
             ],
           ),
