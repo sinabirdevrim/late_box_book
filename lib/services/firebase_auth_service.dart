@@ -12,6 +12,7 @@ class FirebaseAuthService {
     try {
       AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+      debugPrint(result.toString());
       if(result!=null){
         response.data = UserModel(result.user.providerId, result.user.displayName,
             result.user.photoUrl, result.user.email, result.user.phoneNumber);

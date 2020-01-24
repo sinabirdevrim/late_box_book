@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:late_box_book/blocs/user/bloc.dart';
-import 'package:late_box_book/screens/login.dart';
+import 'package:late_box_book/screens/login/login_screen.dart';
 import 'package:late_box_book/util/const.dart';
 
 import 'common/locator.dart';
@@ -35,9 +34,6 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: Constants.appName,
         theme: Constants.lightTheme,
-        home: BlocProvider<UserBloc>(
-          create: (context) => UserBloc(),
-          child: LoginPage(),
-        ));
+        home: LoginScreen());
   }
 }

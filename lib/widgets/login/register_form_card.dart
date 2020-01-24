@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class RegisterFormCard extends StatefulWidget {
+  Function(String _email) funcEmail;
+  Function(String _password) funcPassword;
+  Function(String _rePassword) funcRePassword;
+  GlobalKey<FormState> _formKey;
+
+
+  RegisterFormCard(this.funcEmail, this.funcPassword, this.funcRePassword,
+      this._formKey);
+
   @override
   _RegisterFormCardState createState() => _RegisterFormCardState();
 }
@@ -9,12 +18,11 @@ class RegisterFormCard extends StatefulWidget {
 class _RegisterFormCardState extends State<RegisterFormCard> {
   @override
   Widget build(BuildContext context) {
-    String _email, _password, _passwordRepat;
-    final _formKey = GlobalKey<FormState>();
+
 
     return new Container(
       width: double.infinity,
-      height: 300,
+      height: 320,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
@@ -31,7 +39,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
       child: Padding(
         padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
         child: Form(
-          key: _formKey,
+          key: widget._formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -45,7 +53,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
               LBTextFormField(
                 hintText: "Username",
                 onSaved: (String value) {
-                  _email = value;
+                  widget.funcEmail(value);
                 },
                 labelText: "username",
               ),
@@ -56,7 +64,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 obscureText: true,
                 hintText: "Password",
                 onSaved: (String value) {
-                  _password = value;
+                  widget.funcPassword(value);
                 },
                 labelText: "PassWord",
               ),
@@ -67,7 +75,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 obscureText: true,
                 hintText: "RePassword",
                 onSaved: (String value) {
-                  _passwordRepat = value;
+                  widget.funcRePassword(value);
                 },
                 labelText: "RePassWord",
               ),

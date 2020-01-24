@@ -17,7 +17,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
   Widget build(BuildContext context) {
     return new Container(
       width: double.infinity,
-      height: 250,
+      height: 270,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
