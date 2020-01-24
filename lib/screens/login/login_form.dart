@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/login/bloc.dart';
 import 'package:late_box_book/blocs/login/login_bloc.dart';
+import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/customwidget/platform_specific_alert_dialog.dart';
 import 'package:late_box_book/screens/register/register_screen.dart';
 import 'package:late_box_book/widgets/login/login_form_card.dart';
@@ -38,6 +39,8 @@ class _LoginFormState extends State<LoginForm> {
                   doneText: 'Done',
                 ).show(context);
               });
+            }else if (state is LoginLoadedState){
+              BlocProvider.of<UserBloc>(context).add(UserLoginEvent(state.mUserModel));
             }
           },
           child: Padding(

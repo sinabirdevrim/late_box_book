@@ -20,5 +20,11 @@ class UserRepository {
         email, password);
   }
 
+  Future<BaseModel<UserModel>> userIsAuthenticated() async {
+    return await _firebaseAuthService.userIsAuthenticated();
+  }
 
+  Future<void> signOut() async {
+    await _firebaseAuthService.signOut();
+  }
 }

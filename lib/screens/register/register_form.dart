@@ -98,7 +98,6 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget registerBtn(RegisterState state) {
-    debugPrint(state.toString());
     if (state is RegisterLoadingState) {
       return CircularProgressIndicator();
     } else {

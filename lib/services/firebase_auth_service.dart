@@ -13,10 +13,14 @@ class FirebaseAuthService {
       AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       debugPrint(result.toString());
-      if(result!=null){
-        response.data = UserModel(result.user.providerId, result.user.displayName,
-            result.user.photoUrl, result.user.email, result.user.phoneNumber);
-      }else{
+      if (result != null) {
+        response.data = UserModel(
+            result.user.providerId,
+            result.user.displayName,
+            result.user.photoUrl,
+            result.user.email,
+            result.user.phoneNumber);
+      } else {
         response.errorMessage = "Hata";
       }
     } catch (e) {
@@ -45,5 +49,23 @@ class FirebaseAuthService {
       response.errorMessage = e.message.toString();
     }
     return response;
+  }
+
+  Future<BaseModel<UserModel>> userIsAuthenticated() async {
+    var response = BaseModel<UserModel>();
+    try {
+      var result = await _firebaseAuth.currentUser();
+      if (result != null) {
+        response.data = UserModel(result.providerId, result.displayName,
+            result.photoUrl, result.email, result.phoneNumber);
+      }
+    } catch (e) {
+      response.errorMessage = e.message.toString();
+    }
+    return response;
+  }
+
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
   }
 }
