@@ -19,7 +19,8 @@ class FirebaseAuthService {
             result.user.displayName,
             result.user.photoUrl,
             result.user.email,
-            result.user.phoneNumber);
+            result.user.phoneNumber,
+            result.user.uid);
       } else {
         response.errorMessage = "Hata";
       }
@@ -30,18 +31,22 @@ class FirebaseAuthService {
   }
 
   Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password, String nameAndSurname) async {
     var response = BaseModel<UserModel>();
     try {
-      AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+      var result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       if (result != null) {
+        var user = UserUpdateInfo();
+        user.displayName = nameAndSurname;
+        await result.user.updateProfile(user);
         response.data = UserModel(
             result.user.providerId,
             result.user.displayName,
             result.user.photoUrl,
             result.user.email,
-            result.user.phoneNumber);
+            result.user.phoneNumber,
+            result.user.uid);
       } else {
         response.errorMessage = "Hata";
       }
@@ -57,7 +62,7 @@ class FirebaseAuthService {
       var result = await _firebaseAuth.currentUser();
       if (result != null) {
         response.data = UserModel(result.providerId, result.displayName,
-            result.photoUrl, result.email, result.phoneNumber);
+            result.photoUrl, result.email, result.phoneNumber, result.uid);
       }
     } catch (e) {
       response.errorMessage = e.message.toString();

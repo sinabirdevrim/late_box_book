@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:late_box_book/model/base_model.dart';
 
 class UserModel {
@@ -7,13 +8,18 @@ class UserModel {
   String _photoUrl;
   String _email;
   String _phoneNumber;
+  DateTime _createdAt;
+  DateTime _updatedAt;
+
+  DateTime get createdAt => _createdAt;
 
   UserModel(
       [this._providerId,
       this._displayName,
       this._photoUrl,
       this._email,
-      this._phoneNumber]);
+      this._phoneNumber,
+      this._uid]);
 
   String get phoneNumber => _phoneNumber;
 
@@ -50,4 +56,25 @@ class UserModel {
   set providerId(String value) {
     _providerId = value;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'userID': _uid,
+      'email': _email,
+      'userName': _displayName,
+      'profilURL': _photoUrl,
+      'createdAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    };
+  }
+
+  UserModel.fromMap(Map<String, dynamic> map)
+      : _uid = map['userID'],
+        _email = map['email'],
+        _displayName = map['userName'],
+        _photoUrl = map['profilURL'],
+        _createdAt = (map['createdAt'] as Timestamp).toDate(),
+        _updatedAt = (map['updatedAt'] as Timestamp).toDate();
+
+  DateTime get updatedAt => _updatedAt;
 }

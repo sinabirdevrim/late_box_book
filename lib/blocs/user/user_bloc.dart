@@ -19,7 +19,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else if (event is UserLogOutEvent) {
       yield* _mapAppUserLogOut();
     } else if (event is UserLoginEvent) {
-      yield* _mapAppUserLogIn(state.mUserModel);
+      yield* _mapAppUserLogIn(event.mUserModel);
     }
   }
 
@@ -42,6 +42,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapAppUserLogIn(UserModel user) async* {
+    debugPrint("asd");
+    debugPrint(user.email);
+    var tset = await _userRepository.createTeamName("Test", user);
+    debugPrint(tset.toString());
     yield UserAuthenticatedState(user);
   }
 }

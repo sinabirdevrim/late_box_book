@@ -25,7 +25,7 @@ class UserLoginEvent extends UserEvent {
 
   @override
   // TODO: implement props
-  List<Object> get props => null;
+  List<Object> get props => [mUserModel];
 }
 
 

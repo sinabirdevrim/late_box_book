@@ -10,7 +10,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  String _email, _password, _rePassword;
+  String _email, _password, _rePassword, _nameAndSurname;
   final _formKey = GlobalKey<FormState>();
 
   RegisterBloc _registerBloc;
@@ -42,13 +42,20 @@ class _RegisterFormState extends State<RegisterForm> {
           padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 28),
           child: Column(
             children: <Widget>[
-              RegisterFormCard((_mEmail) {
-                _email = _mEmail;
-              }, (_mPassword) {
-                _password = _mPassword;
-              }, (_mRepassword) {
-                _rePassword = _mRepassword;
-              }, _formKey),
+              RegisterFormCard(
+                  (_mEmail) {
+                    _email = _mEmail;
+                  },
+                  (_mPassword) {
+                    _password = _mPassword;
+                  },
+                  (_mRepassword) {
+                    _rePassword = _mRepassword;
+                  },
+                  _formKey,
+                  (_mNameAndSurname) {
+                    _nameAndSurname = _mNameAndSurname;
+                  }),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +117,7 @@ class _RegisterFormState extends State<RegisterForm> {
   void _formSubmit(RegisterBloc userBloc) {
     if (!(userBloc.state is RegisterLoadingState)) {
       _formKey.currentState.save();
-      userBloc.add(RegisterUserEvent(_email, _password, _rePassword));
+      userBloc.add(RegisterUserEvent(_email, _password, _rePassword,_nameAndSurname));
     }
   }
 }

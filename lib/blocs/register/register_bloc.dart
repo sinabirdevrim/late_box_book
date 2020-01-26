@@ -16,7 +16,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     if (event is RegisterUserEvent) {
       yield RegisterLoadingState();
       var result = await _userRepository.createUserWithEmailAndPassword(
-          event.userName, event.password);
+          event.userName, event.password, event.nameAndSurname);
       if (result.errorMessage.isNotEmpty) {
         yield RegisterErrorState(result.errorMessage);
       } else {

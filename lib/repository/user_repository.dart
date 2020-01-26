@@ -3,15 +3,18 @@ import 'package:late_box_book/model/base_model.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
+import 'package:late_box_book/services/firestore_db_service.dart';
 
 class UserRepository {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
 
+  final FirestoreDBService _firestoreDBService = locator<FirestoreDBService>();
+
   Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password,String nameAndSurname) async {
     return await _firebaseAuthService.createUserWithEmailAndPassword(
-        email, password);
+        email, password,nameAndSurname);
   }
 
   Future<BaseModel<UserModel>> signInWithEmailAndPassword(
@@ -26,5 +29,9 @@ class UserRepository {
 
   Future<void> signOut() async {
     await _firebaseAuthService.signOut();
+  }
+
+  Future<bool> createTeamName(String name, UserModel userModel) async {
+    await _firestoreDBService.createTeamName(name, userModel);
   }
 }

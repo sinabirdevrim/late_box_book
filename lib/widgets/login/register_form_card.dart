@@ -5,11 +5,12 @@ class RegisterFormCard extends StatefulWidget {
   Function(String _email) funcEmail;
   Function(String _password) funcPassword;
   Function(String _rePassword) funcRePassword;
+  Function(String _nameAndSurname) funcNameAndSurname;
   GlobalKey<FormState> _formKey;
 
 
   RegisterFormCard(this.funcEmail, this.funcPassword, this.funcRePassword,
-      this._formKey);
+      this._formKey,this.funcNameAndSurname);
 
   @override
   _RegisterFormCardState createState() => _RegisterFormCardState();
@@ -22,7 +23,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
 
     return new Container(
       width: double.infinity,
-      height: 320,
+      height: 390,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
@@ -51,11 +52,21 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 height: 15,
               ),
               LBTextFormField(
-                hintText: "Username",
+                hintText: "Name Surname",
+                onSaved: (String value) {
+                  widget.funcNameAndSurname(value);
+                },
+                labelText: "Name Surname",
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              LBTextFormField(
+                hintText: "Email",
                 onSaved: (String value) {
                   widget.funcEmail(value);
                 },
-                labelText: "username",
+                labelText: "Email",
               ),
               SizedBox(
                 height: 15,
@@ -66,7 +77,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 onSaved: (String value) {
                   widget.funcPassword(value);
                 },
-                labelText: "PassWord",
+                labelText: "Password",
               ),
               SizedBox(
                 height: 15,
@@ -77,7 +88,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                 onSaved: (String value) {
                   widget.funcRePassword(value);
                 },
-                labelText: "RePassWord",
+                labelText: "RePassword",
               ),
               SizedBox(
                 height: 20,
