@@ -40,7 +40,7 @@ class _LoginFormState extends State<LoginForm> {
                 ).show(context);
               });
             }else if (state is LoginLoadedState){
-              BlocProvider.of<UserBloc>(context).add(UserLoginEvent(state.mUserModel));
+              BlocProvider.of<UserBloc>(context).add(UserLoginEvent(state.mUserModel,false));
             }
           },
           child: Padding(

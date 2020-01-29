@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:late_box_book/model/base_model.dart';
 
+import 'debt_model.dart';
+
 class UserModel {
   String _providerId;
   String _uid;
@@ -10,6 +12,7 @@ class UserModel {
   String _phoneNumber;
   DateTime _createdAt;
   DateTime _updatedAt;
+  DebtModel _debtModel;
 
   DateTime get createdAt => _createdAt;
 
@@ -57,6 +60,12 @@ class UserModel {
     _providerId = value;
   }
 
+  DebtModel get debtModel => _debtModel;
+
+  set debtModel(DebtModel value) {
+    _debtModel = value;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'userID': _uid,
@@ -65,6 +74,7 @@ class UserModel {
       'profilURL': _photoUrl,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
+      'debt': _debtModel == null ? new DebtModel().toMap() : _debtModel.toMap()
     };
   }
 
@@ -74,7 +84,8 @@ class UserModel {
         _displayName = map['userName'],
         _photoUrl = map['profilURL'],
         _createdAt = (map['createdAt'] as Timestamp).toDate(),
-        _updatedAt = (map['updatedAt'] as Timestamp).toDate();
+        _updatedAt = (map['updatedAt'] as Timestamp).toDate(),
+        _debtModel = DebtModel.fromMap(map["debt"]);
 
   DateTime get updatedAt => _updatedAt;
 }

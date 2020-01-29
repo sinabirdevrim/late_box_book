@@ -2,34 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/blocs/user/user_bloc.dart';
+import 'package:late_box_book/widgets/home/bottomsheet/register_team_form.dart';
+
+import 'debtlist/debt_list.dart';
+import 'user_profile/user_profile.dart';
 
 class HomeScreen extends StatefulWidget {
+  bool isNewUser;
+
+  HomeScreen(this.isNewUser);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var keyStorageHome = PageStorageKey("homeKey");
+
   int bottomIndex = 0;
+  PageController _pageController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _pageController = PageController(initialPage: 0);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.isNewUser) {
+        showModalBottomSheet(
+          isDismissible: false,
+            context: context,
+            builder: (_) {
+              return RegisterTeamForm((teamName, isMaster) {
+
+              });
+            });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    var _userBloc = BlocProvider.of<UserBloc>(context);
-
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: true,
       bottomNavigationBar: buildBottomNavigationBar(),
-      body: BlocBuilder(
-        bloc: _userBloc,
-        builder: (_, UserState state) {
-          return Center(
-              child: RaisedButton(
-            child: Text("LogOut"),
-            onPressed: () {
-              _userBloc.add(UserLogOutEvent());
-            },
-          ));
-        },
+      body: PageView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        onPageChanged: onPageChanged,
+        children: <Widget>[
+          DebtList(keyStorageHome),
+          UserProfile()
+        ],
       ),
     );
   }
@@ -42,14 +67,32 @@ class _HomeScreenState extends State<HomeScreen> {
         BottomNavigationBarItem(
             icon: Icon(Icons.home), title: Text("HomePage")),
         BottomNavigationBarItem(
-            icon: Icon(Icons.book), title: Text("HomePage")),
+            icon: Icon(Icons.book), title: Text("My Acount")),
       ],
       currentIndex: bottomIndex,
       onTap: (index) {
         setState(() {
-          bottomIndex = index;
+          navigationTapped(index);
         });
       },
     );
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+
+  void navigationTapped(int page) {
+    _pageController.jumpToPage(page);
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      this.bottomIndex = page;
+    });
+  }
+
 }

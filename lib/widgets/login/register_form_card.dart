@@ -8,22 +8,21 @@ class RegisterFormCard extends StatefulWidget {
   Function(String _nameAndSurname) funcNameAndSurname;
   GlobalKey<FormState> _formKey;
 
-
   RegisterFormCard(this.funcEmail, this.funcPassword, this.funcRePassword,
-      this._formKey,this.funcNameAndSurname);
+      this._formKey, this.funcNameAndSurname);
 
   @override
   _RegisterFormCardState createState() => _RegisterFormCardState();
 }
 
 class _RegisterFormCardState extends State<RegisterFormCard> {
+  bool switchState = false;
+
   @override
   Widget build(BuildContext context) {
-
-
     return new Container(
       width: double.infinity,
-      height: 390,
+      height: 400,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
@@ -45,9 +44,7 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Register",
-                  style: TextStyle(
-                      fontSize: 25,
-                      letterSpacing: .6)),
+                  style: TextStyle(fontSize: 25, letterSpacing: .6)),
               SizedBox(
                 height: 15,
               ),
@@ -89,6 +86,9 @@ class _RegisterFormCardState extends State<RegisterFormCard> {
                   widget.funcRePassword(value);
                 },
                 labelText: "RePassword",
+              ),
+              SizedBox(
+                height: 5,
               ),
               SizedBox(
                 height: 20,

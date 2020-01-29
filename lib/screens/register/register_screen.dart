@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/register/bloc.dart';
+import 'package:late_box_book/blocs/user/user_bloc.dart';
 import 'package:late_box_book/screens/register/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -19,7 +20,7 @@ class RegisterPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: true,
-      body: BlocProvider(create: (_) => RegisterBloc(), child: RegisterForm()),
+      body: BlocProvider(create: (_) => RegisterBloc(userBloc: BlocProvider.of<UserBloc>(context)), child: RegisterForm()),
     );
   }
 }

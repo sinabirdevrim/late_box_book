@@ -25,11 +25,10 @@ class _LandingScreenState extends State<LandingScreen> {
     return BlocBuilder(
       bloc: _userBloc,
       builder: (_, UserState state) {
-        debugPrint(state.toString());
         if (state is UserUnAuthenticatedState) {
           return LoginScreen();
         }else if(state is UserAuthenticatedState){
-          return HomeScreen();
+          return HomeScreen(state.mIsNewUser);
         }else if(state is UserAuthenticatedErrorState){
           return LoginScreen();
         }else{

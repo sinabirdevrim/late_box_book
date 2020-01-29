@@ -1,11 +1,18 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
+  UserBloc _userBloc;
+
+  RegisterBloc({@required UserBloc userBloc}) : assert(userBloc != null) {
+    _userBloc = userBloc;
+  }
+
   final UserRepository _userRepository = locator<UserRepository>();
 
   @override
@@ -21,6 +28,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         yield RegisterErrorState(result.errorMessage);
       } else {
         yield RegisterLoadedState(result.data);
+        _userBloc.add(UserLoginEvent(result.data, true));
       }
     }
   }

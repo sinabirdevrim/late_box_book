@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/fb_const.dart';
 
@@ -12,7 +13,6 @@ class FirestoreDBService {
         .collection(FBConst.TEAM_COLLECTION)
         .where(FBConst.TEAM_NAME, isEqualTo: name)
         .getDocuments();
-    debugPrint(teams.toString());
     if (teams.documents == null || teams.documents.length == 0) {
       await _firebaseDB
           .collection(FBConst.TEAM_COLLECTION)
@@ -53,10 +53,21 @@ class FirestoreDBService {
         .collection(FBConst.TEAM_USER)
         .getDocuments();
 
-    List<UserModel> list =[];
-    for(DocumentSnapshot snap in userList.documents){
+    List<UserModel> list = [];
+    for (DocumentSnapshot snap in userList.documents) {
       list.add(UserModel.fromMap(snap.data));
     }
     return list;
+  }
+
+  /// Update Debt
+  Future<bool> updateUserDebt(
+      String name, String uid, DebtModel debtModel) async {
+    await _firebaseDB
+        .collection(FBConst.TEAM_COLLECTION)
+        .document(name)
+        .collection(FBConst.TEAM_USER)
+        .document(uid)
+        .updateData({FBConst.FIELD_DEBT: debtModel.toMap()});
   }
 }

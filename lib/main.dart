@@ -5,10 +5,12 @@ import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/screens/login/login_screen.dart';
 import 'package:late_box_book/util/const.dart';
 
+import 'blocs/lb_bloc_delegate.dart';
 import 'common/locator.dart';
 import 'screens/landing_screen.dart';
 
 void main() {
+  BlocSupervisor.delegate = LBBlocDelegate();
   setupLocator();
   runApp(MyApp());
 }

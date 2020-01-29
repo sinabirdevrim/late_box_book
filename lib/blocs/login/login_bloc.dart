@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';

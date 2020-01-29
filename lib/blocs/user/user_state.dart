@@ -17,8 +17,11 @@ class UserUnAuthenticatedState extends UserState {
 }
 
 class UserAuthenticatedState extends UserState {
-  UserAuthenticatedState(UserModel mUserModel) {
+  bool mIsNewUser;
+
+  UserAuthenticatedState(UserModel mUserModel, bool isNewUser) {
     super.mUserModel = mUserModel;
+    this.mIsNewUser = isNewUser;
   }
 
   @override
@@ -26,13 +29,12 @@ class UserAuthenticatedState extends UserState {
   List<Object> get props => [mUserModel];
 }
 
-
-class UserAuthenticatedErrorState extends UserState{
+class UserAuthenticatedErrorState extends UserState {
   String errorMessage;
 
   UserAuthenticatedErrorState(this.errorMessage);
+
   @override
   // TODO: implement props
   List<Object> get props => null;
-
 }

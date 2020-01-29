@@ -21,7 +21,8 @@ class UserLogOutEvent extends UserEvent {
 
 class UserLoginEvent extends UserEvent {
   UserModel mUserModel;
-  UserLoginEvent(this.mUserModel);
+  bool isNewUser;
+  UserLoginEvent(this.mUserModel,this.isNewUser);
 
   @override
   // TODO: implement props

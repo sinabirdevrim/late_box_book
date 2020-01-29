@@ -36,10 +36,13 @@ class _RegisterFormState extends State<RegisterForm> {
                 doneText: 'Done',
               ).show(context);
             });
+          } else if (state is RegisterLoadedState) {
+            Navigator.pop(context);
           }
         },
         child: Padding(
-          padding: EdgeInsets.only(left: 28.0, right: 28.0, top: 28),
+          padding:
+              EdgeInsets.only(left: 28.0, right: 28.0, top: 28, bottom: 28),
           child: Column(
             children: <Widget>[
               RegisterFormCard(
@@ -117,7 +120,8 @@ class _RegisterFormState extends State<RegisterForm> {
   void _formSubmit(RegisterBloc userBloc) {
     if (!(userBloc.state is RegisterLoadingState)) {
       _formKey.currentState.save();
-      userBloc.add(RegisterUserEvent(_email, _password, _rePassword,_nameAndSurname));
+      userBloc.add(
+          RegisterUserEvent(_email, _password, _rePassword, _nameAndSurname));
     }
   }
 }
