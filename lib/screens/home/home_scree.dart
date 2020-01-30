@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/blocs/user/user_bloc.dart';
+import 'package:late_box_book/blocs/userdb/bloc.dart';
 import 'package:late_box_book/widgets/home/bottomsheet/register_team_form.dart';
 
 import 'debtlist/debt_list.dart';
@@ -30,13 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.isNewUser) {
         showModalBottomSheet(
-          isDismissible: false,
+            isDismissible: false,
             context: context,
             builder: (_) {
               return RegisterTeamForm((teamName, isMaster) {
-
+                if (isMaster) {
+                  BlocProvider.of<UserFirestoreBloc>(context)
+                      .add(UserFirestoreCreateFireStoreEvent(teamName));
+                  Navigator.pop(context);
+                } else {
+                  BlocProvider.of<UserFirestoreBloc>(context)
+                      .add(UserFirestoreJoinFireStoreEvent(teamName));
+                  Navigator.pop(context);
+                }
+                BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
               });
             });
+      }else{
+        BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
       }
     });
   }
@@ -51,10 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: <Widget>[
-          DebtList(keyStorageHome),
-          UserProfile()
-        ],
+        children: <Widget>[DebtList(keyStorageHome), UserProfile()],
       ),
     );
   }
@@ -84,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController.dispose();
   }
 
-
   void navigationTapped(int page) {
     _pageController.jumpToPage(page);
   }
@@ -94,5 +102,4 @@ class _HomeScreenState extends State<HomeScreen> {
       this.bottomIndex = page;
     });
   }
-
 }

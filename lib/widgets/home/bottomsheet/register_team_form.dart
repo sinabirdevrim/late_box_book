@@ -30,7 +30,6 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
                 height: 15,
               ),
               LBTextFormField(
-                obscureText: true,
                 hintText: "Enter Team Name",
                 onSaved: (String value) {
                   widget._teamName = value;

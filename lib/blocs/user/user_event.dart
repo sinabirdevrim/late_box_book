@@ -3,7 +3,7 @@ import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/model/user_model.dart';
 
 abstract class UserEvent extends Equatable {
-  const UserEvent();
+  UserModel mUserModel;
 }
 
 class UserIsLoginEvent extends UserEvent {
@@ -18,15 +18,13 @@ class UserLogOutEvent extends UserEvent {
   List<Object> get props => null;
 }
 
-
 class UserLoginEvent extends UserEvent {
-  UserModel mUserModel;
   bool isNewUser;
-  UserLoginEvent(this.mUserModel,this.isNewUser);
+  UserLoginEvent(mUserModel, this.isNewUser) {
+    super.mUserModel = mUserModel;
+  }
 
   @override
   // TODO: implement props
   List<Object> get props => [mUserModel];
 }
-
-

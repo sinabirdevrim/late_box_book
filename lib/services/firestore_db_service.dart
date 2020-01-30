@@ -32,7 +32,6 @@ class FirestoreDBService {
         .collection(FBConst.TEAM_COLLECTION)
         .where(FBConst.TEAM_NAME, isEqualTo: name)
         .getDocuments();
-    debugPrint(teams.toString());
     if (teams.documents != null || teams.documents.length != 0) {
       await _firebaseDB
           .collection(FBConst.TEAM_COLLECTION)
@@ -44,6 +43,19 @@ class FirestoreDBService {
     } else {
       return false;
     }
+  }
+
+  Stream<List<UserModel>> getUserListForStream(String teamName) {
+    return _firebaseDB
+        .collection(FBConst.TEAM_COLLECTION)
+        .document(teamName)
+        .collection(FBConst.TEAM_USER)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.documents
+          .map((doc) => UserModel.fromMap(doc.data))
+          .toList();
+    });
   }
 
   Future<List<UserModel>> getUserList(String teamName) async {

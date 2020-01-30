@@ -13,6 +13,7 @@ class UserModel {
   DateTime _createdAt;
   DateTime _updatedAt;
   DebtModel _debtModel;
+  bool _isMaster = false;
 
   DateTime get createdAt => _createdAt;
 
@@ -28,6 +29,12 @@ class UserModel {
 
   set phoneNumber(String value) {
     _phoneNumber = value;
+  }
+
+  bool get isMaster => _isMaster;
+
+  set isMaster(bool value) {
+    _isMaster = value;
   }
 
   String get email => _email;
@@ -74,7 +81,8 @@ class UserModel {
       'profilURL': _photoUrl,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
-      'debt': _debtModel == null ? new DebtModel().toMap() : _debtModel.toMap()
+      'debt': _debtModel == null ? new DebtModel().toMap() : _debtModel.toMap(),
+      'isMaster': _isMaster
     };
   }
 
@@ -85,7 +93,9 @@ class UserModel {
         _photoUrl = map['profilURL'],
         _createdAt = (map['createdAt'] as Timestamp).toDate(),
         _updatedAt = (map['updatedAt'] as Timestamp).toDate(),
-        _debtModel = DebtModel.fromMap(map["debt"]);
+        _debtModel =
+            DebtModel.fromMap(new Map<String, dynamic>.from(map["debt"])),
+        _isMaster = map['isMaster'];
 
   DateTime get updatedAt => _updatedAt;
 }

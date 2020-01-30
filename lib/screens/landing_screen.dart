@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
+import 'package:late_box_book/blocs/userdb/bloc.dart';
 import 'package:late_box_book/screens/home/home_scree.dart';
 import 'package:late_box_book/screens/login/login_screen.dart';
 import 'package:late_box_book/screens/splash/splash_screen.dart';
@@ -27,11 +28,13 @@ class _LandingScreenState extends State<LandingScreen> {
       builder: (_, UserState state) {
         if (state is UserUnAuthenticatedState) {
           return LoginScreen();
-        }else if(state is UserAuthenticatedState){
-          return HomeScreen(state.mIsNewUser);
-        }else if(state is UserAuthenticatedErrorState){
+        } else if (state is UserAuthenticatedState) {
+          return BlocProvider(
+              create: (_) => UserFirestoreBloc(userBloc: _userBloc),
+              child: HomeScreen(state.mIsNewUser));
+        } else if (state is UserAuthenticatedErrorState) {
           return LoginScreen();
-        }else{
+        } else {
           return SplashScreen();
         }
       },

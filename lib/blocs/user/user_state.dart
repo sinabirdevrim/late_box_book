@@ -26,7 +26,7 @@ class UserAuthenticatedState extends UserState {
 
   @override
   // TODO: implement props
-  List<Object> get props => [mUserModel];
+  List<Object> get props => [mUserModel,mIsNewUser];
 }
 
 class UserAuthenticatedErrorState extends UserState {
@@ -36,5 +36,5 @@ class UserAuthenticatedErrorState extends UserState {
 
   @override
   // TODO: implement props
-  List<Object> get props => null;
+  List<Object> get props => [errorMessage];
 }

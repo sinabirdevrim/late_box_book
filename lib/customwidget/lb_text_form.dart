@@ -5,13 +5,15 @@ class LBTextFormField extends StatelessWidget {
   final FormFieldSetter<String> onSaved;
   final String labelText;
   final bool obscureText;
+  final String initialValue;
 
   const LBTextFormField(
       {Key key,
       this.hintText,
       this.onSaved,
       this.labelText,
-      this.obscureText = false})
+      this.obscureText = false,
+      this.initialValue=""})
       : super(key: key);
 
   @override
@@ -22,6 +24,7 @@ class LBTextFormField extends StatelessWidget {
         Text(labelText,
             style: TextStyle(fontSize: 12)),
         TextFormField(
+          initialValue: initialValue,
           obscureText: obscureText,
           decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(

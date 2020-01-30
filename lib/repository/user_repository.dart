@@ -12,9 +12,9 @@ class UserRepository {
   final FirestoreDBService _firestoreDBService = locator<FirestoreDBService>();
 
   Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
-      String email, String password,String nameAndSurname) async {
+      String email, String password, String nameAndSurname) async {
     return await _firebaseAuthService.createUserWithEmailAndPassword(
-        email, password,nameAndSurname);
+        email, password, nameAndSurname);
   }
 
   Future<BaseModel<UserModel>> signInWithEmailAndPassword(
@@ -32,6 +32,16 @@ class UserRepository {
   }
 
   Future<bool> createTeamName(String name, UserModel userModel) async {
-    await _firestoreDBService.createTeamName(name, userModel);
+    return await _firestoreDBService.createTeamName(name, userModel);
   }
+
+  Future<bool> joinTeamName(String name, UserModel userModel) async {
+    return await _firestoreDBService.joinTeamName(name, userModel);
+  }
+
+  Stream<List<UserModel>> getUserListForStream(String teamName){
+    return _firestoreDBService.getUserListForStream(teamName);
+  }
+
+
 }
