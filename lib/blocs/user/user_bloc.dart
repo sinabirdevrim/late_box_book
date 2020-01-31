@@ -45,10 +45,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapAppUserLogIn(UserModel user, bool isNewUser) async* {
-    yield UserAuthenticatedState(user, isNewUser);
     var result = await _userRepository.getUserTeam(user.uid);
     if (result != null && result.isNotEmpty) {
       userTeam = result;
     }
+    yield UserAuthenticatedState(user, isNewUser);
   }
 }
