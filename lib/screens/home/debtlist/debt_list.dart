@@ -58,7 +58,7 @@ class _DebtListState extends State<DebtList> {
                     ),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,7 +71,7 @@ class _DebtListState extends State<DebtList> {
                     ],
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   Text(
                     "Payment Percent",
@@ -120,7 +120,7 @@ class _DebtListState extends State<DebtList> {
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           child: ListTile(
-                            contentPadding: EdgeInsets.all(8),
+                            contentPadding: EdgeInsets.all(6),
                             leading: CircleAvatar(
                               child: Text("1"),
                               radius: 25,
@@ -175,7 +175,7 @@ Widget colorCard(
   final _media = MediaQuery.of(context).size;
   return Container(
     padding: EdgeInsets.all(15),
-    height: 90,
+    height: 85,
     width: _media.width / 2 - 25,
     decoration: BoxDecoration(
         color: color,
