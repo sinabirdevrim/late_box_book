@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:late_box_book/model/user_model.dart';
 
 abstract class UserFirestoreState extends Equatable {
@@ -19,7 +20,7 @@ class UserCreatedFirestoreState extends UserFirestoreState {
 class UserListFirestoreState extends UserFirestoreState {
   int totalDebt = 0;
   int totalPayment = 0;
-  double percent = 0;
+  double percent = 0.0;
 
   UserListFirestoreState(List<UserModel> userModelList) {
     super.userModelList = userModelList;
@@ -31,8 +32,9 @@ class UserListFirestoreState extends UserFirestoreState {
       totalDebt += values.debtModel.totalDept;
       totalPayment += values.debtModel.totalPayment;
     }
-
-    percent = (totalPayment * 100) / totalDebt;
+    if (totalDebt != 0) {
+    percent = ((totalPayment * 100) / totalDebt).toDouble();
+    }
   }
 
   @override

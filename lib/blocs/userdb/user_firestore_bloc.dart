@@ -29,12 +29,12 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
       yield* _mapApUserCreateOrJoinFirestore(
           _userBloc.state.mUserModel, event.teamName, false);
     } else if (event is UserFirestoreGetUsereEvent) {
-      yield* _mapGetUserState("test");
+      yield* _mapGetUserState(_userBloc.userTeam);
     } else if (event is UserFirestoreUserUpdateEvent) {
       yield* _mapUserListUpdateToState(event.userModels);
     } else if (event is UserFirestoreUpdateDebtEvent) {
-      yield* _mapUpdateUserDeptState(
-          event.totalDept, event.totalPayment, state.userModelList, event.uid);
+      yield* _mapUpdateUserDeptState(event.totalDept, event.totalPayment,
+          state.userModelList, event.uid, _userBloc.userTeam);
     }
   }
 
@@ -53,14 +53,19 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     } else {
       await _userRepository.joinTeamName(teamName, user);
     }
+    _userBloc.userTeam = teamName;
   }
 
-  Stream<UserFirestoreState> _mapUpdateUserDeptState(int totalDept,
-      int totalPayment, List<UserModel> userModels, String uid) async* {
+  Stream<UserFirestoreState> _mapUpdateUserDeptState(
+      int totalDept,
+      int totalPayment,
+      List<UserModel> userModels,
+      String uid,
+      String teamName) async* {
     var user = userModels.singleWhere((user) => user.uid == uid);
     user.debtModel.totalDept = totalDept;
     user.debtModel.totalPayment = totalPayment;
-    await _userRepository.updateUserDebt("test", user.uid, user.debtModel);
+    await _userRepository.updateUserDebt(teamName, user.uid, user.debtModel);
   }
 
   @override

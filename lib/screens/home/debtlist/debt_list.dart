@@ -24,6 +24,7 @@ class _DebtListState extends State<DebtList> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Home"),
         centerTitle: true,
@@ -57,7 +58,7 @@ class _DebtListState extends State<DebtList> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,7 +71,7 @@ class _DebtListState extends State<DebtList> {
                     ],
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Text(
                     "Payment Percent",
@@ -82,7 +83,7 @@ class _DebtListState extends State<DebtList> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   LinearPercentIndicator(
                     width: MediaQuery.of(context).size.width - 32,
@@ -99,7 +100,7 @@ class _DebtListState extends State<DebtList> {
                     progressColor: Color(0xFF1b52ff),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   Text(
                     "Teams",
@@ -111,7 +112,7 @@ class _DebtListState extends State<DebtList> {
                     ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   Expanded(
                     child: ListView.builder(

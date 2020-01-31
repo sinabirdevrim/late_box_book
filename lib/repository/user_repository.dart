@@ -47,4 +47,8 @@ class UserRepository {
   Future<bool> updateUserDebt(String name, String uid, DebtModel debtModel) async {
     return await _firestoreDBService.updateUserDebt(name, uid, debtModel);
   }
+
+  Future<String> getUserTeam(String uid) async {
+    return await _firestoreDBService.getUserTeam(uid);
+  }
 }

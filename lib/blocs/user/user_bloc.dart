@@ -7,6 +7,8 @@ import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
+  String userTeam;
+
   final UserRepository _userRepository = locator<UserRepository>();
 
   @override
@@ -29,6 +31,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield UserAuthenticatedErrorState(result.errorMessage);
     } else {
       if (result.data != null) {
+        userTeam = await _userRepository.getUserTeam(result.data.uid);
         yield UserAuthenticatedState(result.data, false);
       } else {
         yield UserUnAuthenticatedState();
@@ -43,6 +46,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Stream<UserState> _mapAppUserLogIn(UserModel user, bool isNewUser) async* {
     yield UserAuthenticatedState(user, isNewUser);
+    var result = await _userRepository.getUserTeam(user.uid);
+    if (result != null && result.isNotEmpty) {
+      userTeam = result;
+    }
   }
-
 }

@@ -20,6 +20,20 @@ class FirestoreDBService {
           .collection(FBConst.TEAM_USER)
           .document(userModel.uid)
           .setData(userModel.toMap());
+      createTeamUserName(userModel, name);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /// Create Team User
+  Future<bool> createTeamUserName(UserModel userModel, String team) async {
+    if (userModel != null) {
+      await _firebaseDB
+          .collection(FBConst.TEAM_USER_COLLECTION)
+          .document(userModel.uid)
+          .setData({"team": team, "isMaster": userModel.isMaster});
       return true;
     } else {
       return false;
@@ -39,9 +53,22 @@ class FirestoreDBService {
           .collection(FBConst.TEAM_USER)
           .document(userModel.uid)
           .setData(userModel.toMap());
+      createTeamUserName(userModel, name);
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<String> getUserTeam(String uid) async {
+    try {
+      var data = await _firebaseDB
+          .collection(FBConst.TEAM_USER_COLLECTION)
+          .document(uid)
+          .get();
+      return data.data["team"];
+    } catch (e) {
+      return "";
     }
   }
 
