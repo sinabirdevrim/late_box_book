@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class DeptEditForm extends StatefulWidget {
-  Function(String amount) _funcAmount;
-  String _userName;
-  String _currentAmount;
+  Function(String amount, String payment) _funcAmount;
+  String _userName, _totalDept;
+  String _currentAmount, _currentPayment;
 
-  DeptEditForm(this._funcAmount, this._userName, this._currentAmount);
+  DeptEditForm(this._funcAmount, this._userName, this._currentAmount,
+      this._currentPayment);
 
   @override
   _DeptEditFormState createState() => _DeptEditFormState();
@@ -18,7 +19,7 @@ class _DeptEditFormState extends State<DeptEditForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 450,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -32,11 +33,22 @@ class _DeptEditFormState extends State<DeptEditForm> {
               ),
               LBTextFormField(
                 initialValue: widget._currentAmount,
-                hintText: "Enter Dept Amount",
+                hintText: "Enter Total Dept Amount",
                 onSaved: (String value) {
-                  widget._funcAmount(value);
+                  widget._totalDept = value;
                 },
-                labelText: "Dpet Amount",
+                labelText: "Total Dpet Amount",
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              LBTextFormField(
+                initialValue: widget._currentPayment,
+                hintText: "Enter Total Payment Amount",
+                onSaved: (String value) {
+                  widget._funcAmount(widget._totalDept, value);
+                },
+                labelText: "Total Payment Amount",
               ),
               SizedBox(
                 height: 20,

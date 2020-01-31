@@ -32,6 +32,7 @@ dependencies:
   firebase_auth: ^0.15.3+1
   cloud_firestore: ^0.12.9+5
   firebase_storage: ^3.0.6
+  percent_indicator: ^2.1.1+1
 
 dev_dependencies:
   flutter_test:

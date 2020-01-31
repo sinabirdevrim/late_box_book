@@ -75,11 +75,16 @@ class FirestoreDBService {
   /// Update Debt
   Future<bool> updateUserDebt(
       String name, String uid, DebtModel debtModel) async {
-    await _firebaseDB
-        .collection(FBConst.TEAM_COLLECTION)
-        .document(name)
-        .collection(FBConst.TEAM_USER)
-        .document(uid)
-        .updateData({FBConst.FIELD_DEBT: debtModel.toMap()});
+    try {
+      await _firebaseDB
+          .collection(FBConst.TEAM_COLLECTION)
+          .document(name)
+          .collection(FBConst.TEAM_USER)
+          .document(uid)
+          .updateData({FBConst.FIELD_DEBT: debtModel.toMap()});
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

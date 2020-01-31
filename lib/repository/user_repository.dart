@@ -1,5 +1,6 @@
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/model/base_model.dart';
+import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
@@ -39,9 +40,11 @@ class UserRepository {
     return await _firestoreDBService.joinTeamName(name, userModel);
   }
 
-  Stream<List<UserModel>> getUserListForStream(String teamName){
+  Stream<List<UserModel>> getUserListForStream(String teamName) {
     return _firestoreDBService.getUserListForStream(teamName);
   }
 
-
+  Future<bool> updateUserDebt(String name, String uid, DebtModel debtModel) async {
+    return await _firestoreDBService.updateUserDebt(name, uid, debtModel);
+  }
 }

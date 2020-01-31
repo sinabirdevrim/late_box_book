@@ -32,6 +32,9 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
       yield* _mapGetUserState("test");
     } else if (event is UserFirestoreUserUpdateEvent) {
       yield* _mapUserListUpdateToState(event.userModels);
+    } else if (event is UserFirestoreUpdateDebtEvent) {
+      yield* _mapUpdateUserDeptState(
+          event.totalDept, event.totalPayment, state.userModelList, event.uid);
     }
   }
 
@@ -52,6 +55,14 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     }
   }
 
+  Stream<UserFirestoreState> _mapUpdateUserDeptState(int totalDept,
+      int totalPayment, List<UserModel> userModels, String uid) async* {
+    var user = userModels.singleWhere((user) => user.uid == uid);
+    user.debtModel.totalDept = totalDept;
+    user.debtModel.totalPayment = totalPayment;
+    await _userRepository.updateUserDebt("test", user.uid, user.debtModel);
+  }
+
   @override
   Future<void> close() {
     _userSubscription?.cancel();
@@ -60,7 +71,6 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
 
   Stream<UserFirestoreState> _mapUserListUpdateToState(
       List<UserModel> _userModels) async* {
-    debugPrint("User Update oldu");
     yield UserListFirestoreState(_userModels);
   }
 }
