@@ -52,3 +52,13 @@ class UserFirestoreUpdateDebtEvent extends UserFirestoreEvent {
   // TODO: implement props
   List<Object> get props => [totalDept, totalPayment, uid];
 }
+
+class UserFirestoreSaveUserTokenEvent extends UserFirestoreEvent {
+  String pushToken;
+
+  UserFirestoreSaveUserTokenEvent(this.pushToken);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [pushToken];
+}

@@ -21,8 +21,9 @@ class UserListFirestoreState extends UserFirestoreState {
   int totalDebt = 0;
   int totalPayment = 0;
   double percent = 0.0;
+  String teamName="";
 
-  UserListFirestoreState(List<UserModel> userModelList) {
+  UserListFirestoreState(List<UserModel> userModelList,this.teamName) {
     super.userModelList = userModelList;
     calculateForDebt();
   }

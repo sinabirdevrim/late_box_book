@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/blocs/user/user_bloc.dart';
 import 'package:late_box_book/blocs/userdb/bloc.dart';
+import 'package:late_box_book/common/notification_handler.dart';
 import 'package:late_box_book/widgets/home/bottomsheet/register_team_form.dart';
 
 import 'debtlist/debt_list.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    NotificationHandler().initializeFCMNotification(context);
     _pageController = PageController(initialPage: 0);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.isNewUser) {
@@ -45,10 +47,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.pop(context);
                 }
                 BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
+                NotificationHandler().getUserToken((token){
+                  debugPrint(token);
+                  BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
+                });
               });
             });
       }else{
         BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
+        NotificationHandler().getUserToken((token){
+          debugPrint(token);
+          BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
+        });
       }
     });
   }

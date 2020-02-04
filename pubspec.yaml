@@ -33,6 +33,8 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   firebase_storage: ^3.0.6
   percent_indicator: ^2.1.1+1
+  firebase_messaging: ^6.0.9
+  flutter_local_notifications: ^1.1.5+1
 
 dev_dependencies:
   flutter_test:

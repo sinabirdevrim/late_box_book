@@ -31,11 +31,19 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     } else if (event is UserFirestoreGetUsereEvent) {
       yield* _mapGetUserState(_userBloc.userTeam);
     } else if (event is UserFirestoreUserUpdateEvent) {
-      yield* _mapUserListUpdateToState(event.userModels);
+      yield* _mapUserListUpdateToState(event.userModels, _userBloc.userTeam);
     } else if (event is UserFirestoreUpdateDebtEvent) {
       yield* _mapUpdateUserDeptState(event.totalDept, event.totalPayment,
           state.userModelList, event.uid, _userBloc.userTeam);
+    } else if (event is UserFirestoreSaveUserTokenEvent) {
+      yield* _mapGetUpdateUserPushToken(event.pushToken);
     }
+  }
+
+  Stream<UserFirestoreState> _mapGetUpdateUserPushToken(
+      String pushToken) async* {
+    await _userRepository.updateUserPushToken(
+        pushToken, _userBloc.userTeam, _userBloc.state.mUserModel.uid);
   }
 
   Stream<UserFirestoreState> _mapGetUserState(String teamName) async* {
@@ -66,6 +74,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     user.debtModel.totalDept = totalDept;
     user.debtModel.totalPayment = totalPayment;
     await _userRepository.updateUserDebt(teamName, user.uid, user.debtModel);
+    await _userRepository.sendPushNotification(user.pushToken, user.debtModel);
   }
 
   @override
@@ -75,7 +84,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
   }
 
   Stream<UserFirestoreState> _mapUserListUpdateToState(
-      List<UserModel> _userModels) async* {
-    yield UserListFirestoreState(_userModels);
+      List<UserModel> _userModels, String teamName) async* {
+    yield UserListFirestoreState(_userModels, teamName);
   }
 }

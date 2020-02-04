@@ -57,6 +57,7 @@ class _DebtListState extends State<DebtList> {
                       letterSpacing: 0.4,
                     ),
                   ),
+
                   SizedBox(
                     height: 15,
                   ),
@@ -102,13 +103,28 @@ class _DebtListState extends State<DebtList> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Teams",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      inherit: true,
-                      letterSpacing: 0.4,
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Teams",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Varela",
+                          ),
+                        ),
+                        TextSpan(
+                          text: "   ${state.teamName}",
+                          style: TextStyle(
+                            color: Colors.grey.shade400,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16,
+                            fontFamily: "Varela",
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -161,6 +177,7 @@ class _DebtListState extends State<DebtList> {
             (amount, payment) {
               _userFirestoreBloc.add(UserFirestoreUpdateDebtEvent(
                   int.parse(amount), int.parse(payment), userModel.uid));
+              Navigator.pop(context);
             },
             userModel.displayName,
             userModel.debtModel.totalDept.toString(),

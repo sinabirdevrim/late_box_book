@@ -19,7 +19,7 @@ class _DeptEditFormState extends State<DeptEditForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
+      height: 500,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(

@@ -15,6 +15,7 @@ class UserModel {
   DateTime _updatedAt;
   DebtModel _debtModel;
   bool _isMaster = false;
+  String _pushToken;
 
   DateTime get createdAt => _createdAt;
 
@@ -27,6 +28,12 @@ class UserModel {
       this._uid]);
 
   String get phoneNumber => _phoneNumber;
+
+  String get pushToken => _pushToken;
+
+  set pushToken(String value) {
+    _pushToken = value;
+  }
 
   set phoneNumber(String value) {
     _phoneNumber = value;
@@ -83,7 +90,8 @@ class UserModel {
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
       'debt': _debtModel == null ? new DebtModel().toMap() : _debtModel.toMap(),
-      'isMaster': _isMaster
+      'isMaster': _isMaster,
+      'pushToken': pushToken
     };
   }
 
@@ -96,7 +104,8 @@ class UserModel {
         _updatedAt = (map['updatedAt'] as Timestamp).toDate(),
         _debtModel =
             DebtModel.fromMap(new Map<String, dynamic>.from(map["debt"])),
-        _isMaster = map['isMaster'];
+        _isMaster = map['isMaster'],
+        _pushToken = map['pushToken'];
 
   DateTime get updatedAt => _updatedAt;
 }

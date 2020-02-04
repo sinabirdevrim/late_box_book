@@ -100,8 +100,8 @@ class FirestoreDBService {
   }
 
   /// Update Debt
-  Future<bool> updateUserDebt(
-      String name, String uid, DebtModel debtModel) async {
+  Future<bool> updateUserDebt(String name, String uid,
+      DebtModel debtModel) async {
     try {
       await _firebaseDB
           .collection(FBConst.TEAM_COLLECTION)
@@ -109,6 +109,20 @@ class FirestoreDBService {
           .collection(FBConst.TEAM_USER)
           .document(uid)
           .updateData({FBConst.FIELD_DEBT: debtModel.toMap()});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateUserPushToken(String pushToken, String teamName,
+      String uId) async {
+    try {
+      _firebaseDB.collection(FBConst.TEAM_COLLECTION)
+          .document(teamName)
+          .collection(FBConst.TEAM_USER)
+          .document(uId)
+          .updateData({FBConst.TEAM_USER_PUSH_TOKEN: pushToken});
       return true;
     } catch (e) {
       return false;

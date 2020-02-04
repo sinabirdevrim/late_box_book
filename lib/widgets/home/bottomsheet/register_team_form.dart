@@ -17,7 +17,7 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 450,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(

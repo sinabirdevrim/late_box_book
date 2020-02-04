@@ -5,12 +5,15 @@ import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firestore_db_service.dart';
+import 'package:late_box_book/services/notification_service.dart';
 
 class UserRepository {
   final FirebaseAuthService _firebaseAuthService =
       locator<FirebaseAuthService>();
 
   final FirestoreDBService _firestoreDBService = locator<FirestoreDBService>();
+  final NotificationService _notificationService =
+      locator<NotificationService>();
 
   Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
       String email, String password, String nameAndSurname) async {
@@ -44,11 +47,26 @@ class UserRepository {
     return _firestoreDBService.getUserListForStream(teamName);
   }
 
-  Future<bool> updateUserDebt(String name, String uid, DebtModel debtModel) async {
+  Future<bool> updateUserDebt(
+      String name, String uid, DebtModel debtModel) async {
     return await _firestoreDBService.updateUserDebt(name, uid, debtModel);
+  }
+
+  Future<bool> sendPushNotification(
+      String pushToken, DebtModel debtModel) async {
+    return await _notificationService.sendNotification(
+        pushToken,
+        "Update Your Debt",
+        "Total Debt: ${debtModel.totalDept} TL, Total Payment: ${debtModel.totalPayment} TL");
   }
 
   Future<String> getUserTeam(String uid) async {
     return await _firestoreDBService.getUserTeam(uid);
+  }
+
+  Future<bool> updateUserPushToken(
+      String pushToken, String teamName, String uID) async {
+    return await _firestoreDBService.updateUserPushToken(
+        pushToken, teamName, uID);
   }
 }
