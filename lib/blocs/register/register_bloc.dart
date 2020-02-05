@@ -27,8 +27,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       if (result.errorMessage.isNotEmpty) {
         yield RegisterErrorState(result.errorMessage);
       } else {
-        yield RegisterLoadedState(result.data);
        _userBloc.add(UserLoginEvent(result.data, true));
+       yield RegisterLoadedState(result.data);
       }
     }
   }

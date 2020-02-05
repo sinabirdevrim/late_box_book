@@ -40,16 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (isMaster) {
                   BlocProvider.of<UserFirestoreBloc>(context)
                       .add(UserFirestoreCreateFireStoreEvent(teamName));
-                  Navigator.pop(context);
                 } else {
                   BlocProvider.of<UserFirestoreBloc>(context)
                       .add(UserFirestoreJoinFireStoreEvent(teamName));
-                  Navigator.pop(context);
                 }
                 BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
                 NotificationHandler().getUserToken((token){
                   debugPrint(token);
                   BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
+                  Navigator.pop(context);
                 });
               });
             });

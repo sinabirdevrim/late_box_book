@@ -57,7 +57,7 @@ class NotificationHandler {
   }
 
   getUserToken(Function(String) token) {
-    _fcm.onTokenRefresh.listen((newToken) {
+    _fcm.getToken().then((newToken){
       token(newToken);
     });
   }
