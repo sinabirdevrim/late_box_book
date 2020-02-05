@@ -151,7 +151,6 @@ class _DebtListState extends State<DebtList> {
                             trailing: Icon(Icons.more_vert),
                             onTap: () {
                               _showDebtBottomSheet(state.userModelList[index]);
-                              debugPrint("onTap $index");
                             },
                           ),
                         );
@@ -171,17 +170,24 @@ class _DebtListState extends State<DebtList> {
 
   void _showDebtBottomSheet(UserModel userModel) {
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (_) {
-          return DeptEditForm(
-            (amount, payment) {
-              _userFirestoreBloc.add(UserFirestoreUpdateDebtEvent(
-                  int.parse(amount), int.parse(payment), userModel.uid));
-              Navigator.pop(context);
-            },
-            userModel.displayName,
-            userModel.debtModel.totalDept.toString(),
-            userModel.debtModel.totalPayment.toString(),
+          return SingleChildScrollView(
+            child: Container(
+              padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: DeptEditForm(
+                (amount, payment) {
+                  _userFirestoreBloc.add(UserFirestoreUpdateDebtEvent(
+                      int.parse(amount), int.parse(payment), userModel.uid));
+                  Navigator.pop(context);
+                },
+                userModel.displayName,
+                userModel.debtModel.totalDept.toString(),
+                userModel.debtModel.totalPayment.toString(),
+              ),
+            ),
           );
         });
   }

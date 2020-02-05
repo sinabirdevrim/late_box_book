@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }else{
         BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
         NotificationHandler().getUserToken((token){
-          debugPrint(token);
           BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
         });
       }

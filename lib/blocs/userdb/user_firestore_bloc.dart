@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/common/locator.dart';
@@ -73,6 +74,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     var user = userModels.singleWhere((user) => user.uid == uid);
     user.debtModel.totalDept = totalDept;
     user.debtModel.totalPayment = totalPayment;
+    user.debtModel.updatedAt = (FieldValue.serverTimestamp() as Timestamp).toDate();
     await _userRepository.updateUserDebt(teamName, user.uid, user.debtModel);
     await _userRepository.sendPushNotification(user.pushToken, user.debtModel);
   }

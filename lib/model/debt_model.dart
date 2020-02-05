@@ -5,7 +5,6 @@ class DebtModel {
   DateTime _updatedAt;
   int _totalDept = 0;
   int _totalPayment = 0;
-  bool _isCreated = false;
 
   DebtModel();
 
@@ -27,12 +26,6 @@ class DebtModel {
     _updatedAt = value;
   }
 
-  bool get isCreated => _isCreated;
-
-  set isCreated(bool value) {
-    _isCreated = value;
-  }
-
   int get totalPayment => _totalPayment;
 
   set totalPayment(int value) {
@@ -40,20 +33,12 @@ class DebtModel {
   }
 
   Map<String, dynamic> toMap() {
-    if (!_isCreated) {
-      return {
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-        'totalDept': _totalDept,
-        'totalPayment': _totalPayment
-      };
-    } else {
-      return {
-        'updatedAt': FieldValue.serverTimestamp(),
-        'totalDept': _totalDept,
-        'totalPayment': _totalPayment
-      };
-    }
+    return {
+      'createdAt': _createdAt ?? FieldValue.serverTimestamp(),
+      'updatedAt': _updatedAt ?? FieldValue.serverTimestamp(),
+      'totalDept': _totalDept,
+      'totalPayment': _totalPayment
+    };
   }
 
   DebtModel.fromMap(Map<String, dynamic> map)

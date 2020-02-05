@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:late_box_book/model/user_model.dart';
 
 abstract class UserFirestoreEvent extends Equatable {

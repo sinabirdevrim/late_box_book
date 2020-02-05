@@ -79,29 +79,16 @@ class FirestoreDBService {
         .collection(FBConst.TEAM_USER)
         .snapshots()
         .map((snapshot) {
-      return snapshot.documents
-          .map((doc) => UserModel.fromMap(doc.data))
-          .toList();
+      return snapshot.documents.map((doc) {
+        debugPrint(doc.data.toString());
+        return UserModel.fromMap(doc.data);
+      }).toList();
     });
   }
 
-  Future<List<UserModel>> getUserList(String teamName) async {
-    var userList = await _firebaseDB
-        .collection(FBConst.TEAM_COLLECTION)
-        .document(teamName)
-        .collection(FBConst.TEAM_USER)
-        .getDocuments();
-
-    List<UserModel> list = [];
-    for (DocumentSnapshot snap in userList.documents) {
-      list.add(UserModel.fromMap(snap.data));
-    }
-    return list;
-  }
-
   /// Update Debt
-  Future<bool> updateUserDebt(String name, String uid,
-      DebtModel debtModel) async {
+  Future<bool> updateUserDebt(
+      String name, String uid, DebtModel debtModel) async {
     try {
       await _firebaseDB
           .collection(FBConst.TEAM_COLLECTION)
@@ -115,10 +102,11 @@ class FirestoreDBService {
     }
   }
 
-  Future<bool> updateUserPushToken(String pushToken, String teamName,
-      String uId) async {
+  Future<bool> updateUserPushToken(
+      String pushToken, String teamName, String uId) async {
     try {
-      _firebaseDB.collection(FBConst.TEAM_COLLECTION)
+      _firebaseDB
+          .collection(FBConst.TEAM_COLLECTION)
           .document(teamName)
           .collection(FBConst.TEAM_USER)
           .document(uId)
