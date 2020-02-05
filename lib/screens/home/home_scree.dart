@@ -33,24 +33,31 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.isNewUser) {
         showModalBottomSheet(
+            isScrollControlled: true,
             isDismissible: false,
             context: context,
             builder: (_) {
-              return RegisterTeamForm((teamName, isMaster) {
-                if (isMaster) {
-                  BlocProvider.of<UserFirestoreBloc>(context)
-                      .add(UserFirestoreCreateFireStoreEvent(teamName));
-                } else {
-                  BlocProvider.of<UserFirestoreBloc>(context)
-                      .add(UserFirestoreJoinFireStoreEvent(teamName));
-                }
-                BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
-                NotificationHandler().getUserToken((token){
-                  debugPrint(token);
-                  BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
-                  Navigator.pop(context);
-                });
-              });
+              return SingleChildScrollView(
+                child: Container(
+                  padding:
+                  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: RegisterTeamForm((teamName, isMaster) {
+                    if (isMaster) {
+                      BlocProvider.of<UserFirestoreBloc>(context)
+                          .add(UserFirestoreCreateFireStoreEvent(teamName));
+                    } else {
+                      BlocProvider.of<UserFirestoreBloc>(context)
+                          .add(UserFirestoreJoinFireStoreEvent(teamName));
+                    }
+                    BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
+                    NotificationHandler().getUserToken((token){
+                      debugPrint(token);
+                      BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
+                      Navigator.pop(context);
+                    });
+                  }),
+                ),
+              );
             });
       }else{
         BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
