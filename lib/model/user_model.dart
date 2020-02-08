@@ -51,7 +51,11 @@ class UserModel {
     _email = value;
   }
 
-  String get photoUrl => _photoUrl;
+  String get photoUrl {
+    return _photoUrl != null
+        ? _photoUrl
+        : "https://i.stack.imgur.com/l60Hf.png";
+  }
 
   set photoUrl(String value) {
     _photoUrl = value;
@@ -86,7 +90,8 @@ class UserModel {
       'userID': _uid,
       'email': _email,
       'userName': _displayName,
-      'profilURL': _photoUrl,
+      'profilURL':
+          _photoUrl == null ? "https://i.stack.imgur.com/l60Hf.png" : _photoUrl,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
       'debt': _debtModel == null ? new DebtModel().toMap() : _debtModel.toMap(),

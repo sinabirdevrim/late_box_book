@@ -31,7 +31,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       yield UserAuthenticatedErrorState(result.errorMessage);
     } else {
       if (result.data != null) {
-        userTeam = await _userRepository.getUserTeam(result.data.uid);
+        var teams = await _userRepository.getUserTeam(result.data.uid);
+        userTeam = teams[0];
         yield UserAuthenticatedState(result.data, false);
       } else {
         yield UserUnAuthenticatedState();
@@ -45,10 +46,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   Stream<UserState> _mapAppUserLogIn(UserModel user, bool isNewUser) async* {
-    if(!isNewUser){
+    if (!isNewUser) {
       var result = await _userRepository.getUserTeam(user.uid);
       if (result != null && result.isNotEmpty) {
-        userTeam = result;
+        userTeam = result[0];
       }
     }
     yield UserAuthenticatedState(user, isNewUser);

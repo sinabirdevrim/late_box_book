@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:late_box_book/blocs/profile/bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/blocs/userdb/bloc.dart';
 import 'package:late_box_book/screens/home/home_scree.dart';
@@ -26,12 +27,18 @@ class _LandingScreenState extends State<LandingScreen> {
     return BlocBuilder(
       bloc: _userBloc,
       builder: (_, UserState state) {
+        debugPrint(state.toString());
         if (state is UserUnAuthenticatedState) {
           return LoginScreen();
         } else if (state is UserAuthenticatedState) {
-          return BlocProvider(
+          return MultiBlocProvider(providers: [
+            BlocProvider(
               create: (_) => UserFirestoreBloc(userBloc: _userBloc),
-              child: HomeScreen(state.mIsNewUser));
+            ),
+            BlocProvider(
+                create: (_) =>
+                    ProfileBloc(userBloc: _userBloc))
+          ], child: HomeScreen(state.mIsNewUser));
         } else if (state is UserAuthenticatedErrorState) {
           return LoginScreen();
         } else {

@@ -23,151 +23,174 @@ class _DebtListState extends State<DebtList> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Home"),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.exit_to_app,
-            ),
-            onPressed: () {
-              BlocProvider.of<UserBloc>(context).add(UserLogOutEvent());
-            },
-          ),
-        ],
-      ),
-      body: BlocBuilder(
+    return BlocBuilder(
         bloc: _userFirestoreBloc,
         builder: (context, UserFirestoreState state) {
-          if (state is UserListFirestoreState) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Case",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      inherit: true,
-                      letterSpacing: 0.4,
+            return Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Home Page',
                     ),
-                  ),
-
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      colorCard("Total Debt", state.totalDebt.toDouble(),
-                          context, Color(0xFF17ead9)),
-                      colorCard("Payment Debt", state.totalPayment.toDouble(),
-                          context, Color(0xFF6078ea)),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    "Payment Percent",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      inherit: true,
-                      letterSpacing: 0.4,
+                    Text(
+                      state.teamName,
+                      style: TextStyle(
+                        color: Colors.grey.shade400,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        fontFamily: "Varela",
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  LinearPercentIndicator(
-                    width: MediaQuery.of(context).size.width - 32,
-                    lineHeight: 20.0,
-                    animation: true,
-                    animateFromLastPercent: true,
-                    percent: state.percent / 100,
-                    center: Text(
-                      state.percent.toString() + "%",
-                      style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                  ],
+                ),
+                centerTitle: true,
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.exit_to_app,
                     ),
-                    linearStrokeCap: LinearStrokeCap.roundAll,
-                    backgroundColor: Colors.grey.shade300,
-                    progressColor: Color(0xFF1b52ff),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: "Teams",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: "Varela",
-                          ),
-                        ),
-                        TextSpan(
-                          text: "   ${state.teamName}",
-                          style: TextStyle(
-                            color: Colors.grey.shade400,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                            fontFamily: "Varela",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: state.userModelList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(6),
-                            leading: CircleAvatar(
-                              child: Text("1"),
-                              radius: 25,
-                            ),
-                            title: Text(state.userModelList[index].displayName),
-                            subtitle: Text("The remaining amount : " +
-                                (state.userModelList[index].debtModel
-                                            .totalDept -
-                                        state.userModelList[index].debtModel
-                                            .totalPayment)
-                                    .toString() +" TL"),
-                            trailing: Icon(Icons.more_vert),
-                            onTap: () {
-                              _showDebtBottomSheet(state.userModelList[index]);
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                    onPressed: () {
+                      BlocProvider.of<UserBloc>(context).add(UserLogOutEvent());
+                    },
                   ),
                 ],
               ),
+              body: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: mainBody(state, context),
+              ),
             );
-          } else {
-            return Center(child: Container(child: Text("No User :(")));
-          }
-        },
-      ),
-    );
+        });
   }
 
+  Widget mainBody(UserFirestoreState state, BuildContext context) {
+    if (state is UserListFirestoreState) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "Case",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              inherit: true,
+              letterSpacing: 0.4,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              colorCard("Total Debt", state.totalDebt.toDouble(),
+                  context, Color(0xFF17ead9)),
+              colorCard("Payment Debt", state.totalPayment.toDouble(),
+                  context, Color(0xFF6078ea)),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Text(
+            "Payment Percent",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              inherit: true,
+              letterSpacing: 0.4,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          LinearPercentIndicator(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width - 32,
+            lineHeight: 20.0,
+            animation: true,
+            animateFromLastPercent: true,
+            percent: state.percent / 100,
+            center: Text(
+              state.percent.toString() + "%",
+              style:
+              new TextStyle(fontSize: 12.0, color: Colors.white),
+            ),
+            linearStrokeCap: LinearStrokeCap.roundAll,
+            backgroundColor: Colors.grey.shade300,
+            progressColor: Color(0xFF1b52ff),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Teams",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Varela",
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: state.userModelList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(6),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(state.userModelList[index].photoUrl),
+                      radius: 25,
+                    ),
+                    title:
+                    Text(state.userModelList[index].displayName),
+                    subtitle: Text("The remaining amount : " +
+                        (state.userModelList[index].debtModel
+                            .totalDept -
+                            state.userModelList[index].debtModel
+                                .totalPayment)
+                            .toString() +
+                        " TL"),
+                    trailing: Icon(Icons.more_vert),
+                    onTap: () {
+                      _showDebtBottomSheet(
+                          state.userModelList[index]);
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      );
+    }else{
+      return Center(child: Container(child: Text("No User :(")));
+    }
+  }
+
+
+/*if (state is UserListFirestoreState) {
+  } else {
+  return Center(child: Container(child: Text("No User :(")));
+  }
+  */
   void _showDebtBottomSheet(UserModel userModel) {
     showModalBottomSheet(
         isScrollControlled: true,
@@ -175,8 +198,8 @@ class _DebtListState extends State<DebtList> {
         builder: (_) {
           return SingleChildScrollView(
             child: Container(
-              padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               child: DeptEditForm(
                 (amount, payment) {
                   _userFirestoreBloc.add(UserFirestoreUpdateDebtEvent(

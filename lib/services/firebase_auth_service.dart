@@ -6,8 +6,8 @@ import 'package:late_box_book/model/user_model.dart';
 class FirebaseAuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<BaseModel<UserModel>> signInWithEmailAndPassword(String email,
-      String password) async {
+  Future<BaseModel<UserModel>> signInWithEmailAndPassword(
+      String email, String password) async {
     var response = BaseModel<UserModel>();
     try {
       AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
@@ -29,8 +29,8 @@ class FirebaseAuthService {
     return response;
   }
 
-  Future<BaseModel<UserModel>> createUserWithEmailAndPassword(String email,
-      String password, String nameAndSurname) async {
+  Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
+      String email, String password, String nameAndSurname) async {
     var response = BaseModel<UserModel>();
     try {
       var result = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -72,5 +72,17 @@ class FirebaseAuthService {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+  }
+
+  Future<BaseModel<UserModel>> updateUserProfile(String profilePhoto) async {
+    var user = await _firebaseAuth.currentUser();
+    var userUpdate = UserUpdateInfo();
+    userUpdate.photoUrl = profilePhoto;
+    await user.updateProfile(userUpdate);
+    await user.reload();
+    var response = BaseModel<UserModel>();
+    response.data = UserModel(user.providerId, user.displayName, user.photoUrl,
+        user.email, user.phoneNumber, user.uid);
+    return response;
   }
 }

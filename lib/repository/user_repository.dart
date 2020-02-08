@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/model/base_model.dart';
 import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
+import 'package:late_box_book/services/firebase_storage_service.dart';
 import 'package:late_box_book/services/firestore_db_service.dart';
 import 'package:late_box_book/services/notification_service.dart';
 
@@ -14,6 +17,9 @@ class UserRepository {
   final FirestoreDBService _firestoreDBService = locator<FirestoreDBService>();
   final NotificationService _notificationService =
       locator<NotificationService>();
+
+  FirebaseStorageService _firebaseStorageService =
+      locator<FirebaseStorageService>();
 
   Future<BaseModel<UserModel>> createUserWithEmailAndPassword(
       String email, String password, String nameAndSurname) async {
@@ -60,7 +66,13 @@ class UserRepository {
         "Total Debt: ${debtModel.totalDept} TL, Total Payment: ${debtModel.totalPayment} TL");
   }
 
-  Future<String> getUserTeam(String uid) async {
+  Future<String> uploadFile(
+      String userID, String fileType, File uploadFile) async {
+    return await _firebaseStorageService.uploadFile(
+        userID, fileType, uploadFile);
+  }
+
+  Future<List<String>> getUserTeam(String uid) async {
     return await _firestoreDBService.getUserTeam(uid);
   }
 
@@ -68,5 +80,11 @@ class UserRepository {
       String pushToken, String teamName, String uID) async {
     return await _firestoreDBService.updateUserPushToken(
         pushToken, teamName, uID);
+  }
+
+  Future<BaseModel<UserModel>> updateProfilePhoto(
+      String photoUrl, String team, String uid) async {
+    await _firestoreDBService.updateProfilePhoto(uid, photoUrl, team);
+    return await _firebaseAuthService.updateUserProfile(photoUrl);
   }
 }

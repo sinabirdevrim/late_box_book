@@ -4,6 +4,7 @@ import 'package:late_box_book/model/user_model.dart';
 
 abstract class UserFirestoreState extends Equatable {
   List<UserModel> userModelList;
+  String teamName = "";
 }
 
 class InitialUserFirestoreState extends UserFirestoreState {
@@ -21,10 +22,10 @@ class UserListFirestoreState extends UserFirestoreState {
   int totalDebt = 0;
   int totalPayment = 0;
   double percent = 0.0;
-  String teamName="";
 
-  UserListFirestoreState(List<UserModel> userModelList,this.teamName) {
+  UserListFirestoreState(List<UserModel> userModelList, String teamName) {
     super.userModelList = userModelList;
+    super.teamName = teamName;
     calculateForDebt();
   }
 
@@ -34,7 +35,7 @@ class UserListFirestoreState extends UserFirestoreState {
       totalPayment += values.debtModel.totalPayment;
     }
     if (totalDebt != 0) {
-    percent = ((totalPayment * 100) / totalDebt).toDouble();
+      percent = ((totalPayment * 100) / totalDebt).toDouble();
     }
   }
 

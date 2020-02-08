@@ -32,6 +32,7 @@ class _DeptEditFormState extends State<DeptEditForm> {
                 height: 15,
               ),
               LBTextFormField(
+                inputType: TextInputType.number,
                 initialValue: widget._currentAmount,
                 hintText: "Enter Total Dept Amount",
                 onSaved: (String value) {
@@ -43,6 +44,7 @@ class _DeptEditFormState extends State<DeptEditForm> {
                 height: 20,
               ),
               LBTextFormField(
+                inputType: TextInputType.number,
                 initialValue: widget._currentPayment,
                 hintText: "Enter Total Payment Amount",
                 onSaved: (String value) {

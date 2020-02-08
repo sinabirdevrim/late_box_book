@@ -21,6 +21,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var keyStorageHome = PageStorageKey("homeKey");
+  var keyStorageProfile = PageStorageKey("profileKey");
+  UserFirestoreBloc _userFirestoreBloc;
 
   int bottomIndex = 0;
   PageController _pageController;
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _userFirestoreBloc = BlocProvider.of<UserFirestoreBloc>(context);
     NotificationHandler().initializeFCMNotification(context);
     _pageController = PageController(initialPage: 0);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -40,30 +43,31 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (_) {
               return SingleChildScrollView(
                 child: Container(
-                  padding:
-                  EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: RegisterTeamForm((teamName, isMaster) {
                     if (isMaster) {
-                      BlocProvider.of<UserFirestoreBloc>(context)
+                      _userFirestoreBloc
                           .add(UserFirestoreCreateFireStoreEvent(teamName));
                     } else {
-                      BlocProvider.of<UserFirestoreBloc>(context)
+                      _userFirestoreBloc
                           .add(UserFirestoreJoinFireStoreEvent(teamName));
                     }
-                    BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
-                    NotificationHandler().getUserToken((token){
+                    _userFirestoreBloc.add(UserFirestoreGetUsereEvent());
+                    NotificationHandler().getUserToken((token) {
                       debugPrint(token);
-                      BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
+                      _userFirestoreBloc
+                          .add(UserFirestoreSaveUserTokenEvent(token));
                       Navigator.pop(context);
                     });
                   }),
                 ),
               );
             });
-      }else{
-        BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreGetUsereEvent());
-        NotificationHandler().getUserToken((token){
-          BlocProvider.of<UserFirestoreBloc>(context).add(UserFirestoreSaveUserTokenEvent(token));
+      } else {
+        _userFirestoreBloc.add(UserFirestoreGetUsereEvent());
+        NotificationHandler().getUserToken((token) {
+          _userFirestoreBloc.add(UserFirestoreSaveUserTokenEvent(token));
         });
       }
     });
@@ -79,7 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: NeverScrollableScrollPhysics(),
         controller: _pageController,
         onPageChanged: onPageChanged,
-        children: <Widget>[DebtList(keyStorageHome), UserProfile()],
+        children: <Widget>[
+          DebtList(keyStorageHome),
+          UserProfile(keyStorageProfile)
+        ],
       ),
     );
   }

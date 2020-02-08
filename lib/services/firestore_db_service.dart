@@ -33,6 +33,8 @@ class FirestoreDBService {
       await _firebaseDB
           .collection(FBConst.TEAM_USER_COLLECTION)
           .document(userModel.uid)
+          .collection(FBConst.TEAM_COLLECTION)
+          .document(team)
           .setData({"team": team, "isMaster": userModel.isMaster});
       return true;
     } else {
@@ -60,15 +62,17 @@ class FirestoreDBService {
     }
   }
 
-  Future<String> getUserTeam(String uid) async {
+  Future<List<String>> getUserTeam(String uid) async {
     try {
       var data = await _firebaseDB
           .collection(FBConst.TEAM_USER_COLLECTION)
           .document(uid)
-          .get();
-      return data.data["team"];
+          .collection(FBConst.TEAM_COLLECTION)
+          .getDocuments();
+      return data.documentChanges.map((t)=>t.document.data["team"].toString()).toList();
     } catch (e) {
-      return "";
+      debugPrint("Hata: "+ e.toString());
+      return List<String>();
     }
   }
 
@@ -115,5 +119,16 @@ class FirestoreDBService {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<bool> updateProfilePhoto(
+      String userID, String photoUrl, String team) async {
+    await _firebaseDB
+        .collection(FBConst.TEAM_COLLECTION)
+        .document(team)
+        .collection(FBConst.TEAM_USER)
+        .document(userID)
+        .updateData({'profilURL': photoUrl});
+    return true;
   }
 }

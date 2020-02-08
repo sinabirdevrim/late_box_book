@@ -6,6 +6,7 @@ class LBTextFormField extends StatelessWidget {
   final String labelText;
   final bool obscureText;
   final String initialValue;
+  final TextInputType inputType;
 
   const LBTextFormField(
       {Key key,
@@ -13,7 +14,8 @@ class LBTextFormField extends StatelessWidget {
       this.onSaved,
       this.labelText,
       this.obscureText = false,
-      this.initialValue=""})
+      this.initialValue = "",
+      this.inputType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -21,9 +23,9 @@ class LBTextFormField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(labelText,
-            style: TextStyle(fontSize: 12)),
+        Text(labelText, style: TextStyle(fontSize: 12)),
         TextFormField(
+          keyboardType: inputType,
           initialValue: initialValue,
           obscureText: obscureText,
           decoration: InputDecoration(
