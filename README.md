@@ -7,3 +7,4 @@ This is scrum daliy late box app
 - Firebase Auth
 - Firebase Push Notification
 - Get_It dependency injection
+- Shared Preferences
