@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => UserBloc()..add(UserIsLoginEvent()),
-      child: MaterialApp(
+      child:  MaterialApp(
           debugShowCheckedModeBanner: false,
           title: Constants.appName,
           theme: Constants.lightTheme,

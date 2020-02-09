@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/common/locator.dart';
+import 'package:late_box_book/common/shared_pref_manager.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
@@ -11,6 +12,8 @@ import './bloc.dart';
 class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
   UserBloc _userBloc;
   StreamSubscription _userSubscription;
+
+  final SharedPrefManager _sharedPrefManager = locator<SharedPrefManager>();
 
   UserFirestoreBloc({@required UserBloc userBloc}) : assert(userBloc != null) {
     _userBloc = userBloc;
@@ -63,6 +66,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
       await _userRepository.joinTeamName(teamName, user);
     }
     _userBloc.userTeam = teamName;
+    _sharedPrefManager.setTeam(teamName);
   }
 
   Stream<UserFirestoreState> _mapUpdateUserDeptState(

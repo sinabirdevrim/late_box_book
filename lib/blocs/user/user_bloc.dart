@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:late_box_book/common/locator.dart';
+import 'package:late_box_book/common/shared_pref_manager.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
@@ -10,6 +11,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   String userTeam;
 
   final UserRepository _userRepository = locator<UserRepository>();
+  final SharedPrefManager _sharedPrefManager = locator<SharedPrefManager>();
 
   @override
   UserState get initialState => InitialUserState();
@@ -32,12 +34,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     } else {
       if (result.data != null) {
         var teams = await _userRepository.getUserTeam(result.data.uid);
-        userTeam = teams[0];
+        _setUserTeam(teams);
         yield UserAuthenticatedState(result.data, false);
       } else {
         yield UserUnAuthenticatedState();
       }
     }
+  }
+
+  void _setUserTeam(List<String> teams) {
+    var currentTeam = _sharedPrefManager.getTeam();
+    userTeam =
+        teams.firstWhere((t) => t == currentTeam, orElse: () => teams.first);
   }
 
   Stream<UserState> _mapAppUserLogOut() async* {
@@ -49,7 +57,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (!isNewUser) {
       var result = await _userRepository.getUserTeam(user.uid);
       if (result != null && result.isNotEmpty) {
-        userTeam = result[0];
+        _setUserTeam(result);
       }
     }
     yield UserAuthenticatedState(user, isNewUser);

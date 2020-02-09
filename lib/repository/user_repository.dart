@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/model/base_model.dart';
 import 'package:late_box_book/model/debt_model.dart';
+import 'package:late_box_book/model/user_dept.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
@@ -86,5 +87,9 @@ class UserRepository {
       String photoUrl, String team, String uid) async {
     await _firestoreDBService.updateProfilePhoto(uid, photoUrl, team);
     return await _firebaseAuthService.updateUserProfile(photoUrl);
+  }
+
+  Stream<List<UserDebt>> getUserAllDebtTeam(String uid) {
+    return _firestoreDBService.getUserAllDebtTeam(uid);
   }
 }

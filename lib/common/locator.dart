@@ -5,6 +5,8 @@ import 'package:late_box_book/services/firebase_storage_service.dart';
 import 'package:late_box_book/services/firestore_db_service.dart';
 import 'package:late_box_book/services/notification_service.dart';
 
+import 'shared_pref_manager.dart';
+
 GetIt locator = GetIt.asNewInstance();
 
 void setupLocator() {
@@ -13,4 +15,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => FirestoreDBService());
   locator.registerLazySingleton(() => NotificationService());
   locator.registerLazySingleton(() => FirebaseStorageService());
+  locator.registerLazySingleton(() => SharedPrefManager());
 }

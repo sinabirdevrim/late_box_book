@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:late_box_book/model/base_model.dart';
 import 'package:late_box_book/model/debt_model.dart';
+import 'package:late_box_book/model/user_dept.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/services/fb_const.dart';
 
@@ -35,7 +37,12 @@ class FirestoreDBService {
           .document(userModel.uid)
           .collection(FBConst.TEAM_COLLECTION)
           .document(team)
-          .setData({"team": team, "isMaster": userModel.isMaster});
+          .setData({
+        "team": team,
+        "isMaster": userModel.isMaster,
+        "totalDebt": 0,
+        "totalPayment": 0
+      });
       return true;
     } else {
       return false;
@@ -69,9 +76,11 @@ class FirestoreDBService {
           .document(uid)
           .collection(FBConst.TEAM_COLLECTION)
           .getDocuments();
-      return data.documentChanges.map((t)=>t.document.data["team"].toString()).toList();
+      return data.documentChanges
+          .map((t) => t.document.data["team"].toString())
+          .toList();
     } catch (e) {
-      debugPrint("Hata: "+ e.toString());
+      debugPrint("Hata: " + e.toString());
       return List<String>();
     }
   }
@@ -94,12 +103,23 @@ class FirestoreDBService {
   Future<bool> updateUserDebt(
       String name, String uid, DebtModel debtModel) async {
     try {
+      getUserAllDebtTeam(uid);
       await _firebaseDB
           .collection(FBConst.TEAM_COLLECTION)
           .document(name)
           .collection(FBConst.TEAM_USER)
           .document(uid)
           .updateData({FBConst.FIELD_DEBT: debtModel.toMap()});
+      _firebaseDB
+          .collection(FBConst.TEAM_USER_COLLECTION)
+          .document(uid)
+          .collection(FBConst.TEAM_COLLECTION)
+          .document(name)
+          .updateData({
+        "totalDebt": debtModel.totalDept,
+        "totalPayment": debtModel.totalPayment
+      });
+
       return true;
     } catch (e) {
       return false;
@@ -130,5 +150,16 @@ class FirestoreDBService {
         .document(userID)
         .updateData({'profilURL': photoUrl});
     return true;
+  }
+
+  Stream<List<UserDebt>> getUserAllDebtTeam(String uid) {
+    return _firebaseDB
+        .collection(FBConst.TEAM_USER_COLLECTION)
+        .document(uid)
+        .collection(FBConst.TEAM_COLLECTION)
+        .snapshots()
+        .map((data) {
+      return data.documents.map((t) => UserDebt.fromMap(t.data)).toList();
+    });
   }
 }

@@ -36,8 +36,8 @@ class _LandingScreenState extends State<LandingScreen> {
               create: (_) => UserFirestoreBloc(userBloc: _userBloc),
             ),
             BlocProvider(
-                create: (_) =>
-                    ProfileBloc(userBloc: _userBloc))
+                create: (_) => ProfileBloc(userBloc: _userBloc)
+                  ..add(ProfileGetUserEvent()))
           ], child: HomeScreen(state.mIsNewUser));
         } else if (state is UserAuthenticatedErrorState) {
           return LoginScreen();
