@@ -67,82 +67,30 @@ class _UserProfileState extends State<UserProfile> {
                         style: TextStyle(),
                       ),
                       SizedBox(height: 25),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 50),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  state.teamCount.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  "Team",
-                                  style: TextStyle(),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  state.totalDept.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  "Total Debt",
-                                  style: TextStyle(),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: <Widget>[
-                                Text(
-                                  state.totalPaymnet.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  "Total Payment",
-                                  style: TextStyle(),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      buildUserDebtInfos(state),
+                      SizedBox(
+                        height: 25,
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: state.userDebts.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(6),
-                                title: Text("Team Name: "+state.userDebts[index].team),
-                                subtitle: Text("The remaining amount : " +
-                                    (state.userDebts[index].totalDebt -
-                                            state.userDebts[index].totalPayment)
-                                        .toString() +
-                                    " TL"),
-                                trailing: Icon(Icons.more_vert),
-                                onTap: () {},
-                              ),
-                            );
-                          },
-                        ),
+                      Row(
+                        children: <Widget>[
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Your Teams",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Varela",
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
+                      buildTeamListView(state),
                     ],
                   );
                 } else {
@@ -150,6 +98,89 @@ class _UserProfileState extends State<UserProfile> {
                 }
               }),
         ));
+  }
+
+  Padding buildUserDebtInfos(ProfileState state) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 50),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              Text(
+                state.teamCount.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Team",
+                style: TextStyle(),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Text(
+                state.totalDept.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Total Debt",
+                style: TextStyle(),
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              Text(
+                state.totalPaymnet.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Total Payment",
+                style: TextStyle(),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Expanded buildTeamListView(ProfileState state) {
+    return Expanded(
+        child: ListView.builder(
+          padding:EdgeInsets.all(0) ,
+        itemCount: state.userDebts.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            child: ListTile(
+              contentPadding: EdgeInsets.all(6),
+              title: Text("Team Name: " + state.userDebts[index].team),
+              subtitle: Text("The remaining amount : " +
+                  (state.userDebts[index].totalDebt -
+                          state.userDebts[index].totalPayment)
+                      .toString() +
+                  " TL"),
+              trailing: Icon(Icons.more_vert),
+              onTap: () {},
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void _onGalery() async {

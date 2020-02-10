@@ -26,44 +26,44 @@ class _DebtListState extends State<DebtList> {
     return BlocBuilder(
         bloc: _userFirestoreBloc,
         builder: (context, UserFirestoreState state) {
-            return Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                title: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Home Page',
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'Home Page',
+                  ),
+                  Text(
+                    state.teamName,
+                    style: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      fontFamily: "Varela",
                     ),
-                    Text(
-                      state.teamName,
-                      style: TextStyle(
-                        color: Colors.grey.shade400,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14,
-                        fontFamily: "Varela",
-                      ),
-                    ),
-                  ],
-                ),
-                centerTitle: true,
-                actions: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.exit_to_app,
-                    ),
-                    onPressed: () {
-                      BlocProvider.of<UserBloc>(context).add(UserLogOutEvent());
-                    },
                   ),
                 ],
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: mainBody(state, context),
-              ),
-            );
+              centerTitle: true,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.exit_to_app,
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<UserBloc>(context).add(UserLogOutEvent());
+                  },
+                ),
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: mainBody(state, context),
+            ),
+          );
         });
   }
 
@@ -75,7 +75,7 @@ class _DebtListState extends State<DebtList> {
           Text(
             "Case",
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
               inherit: true,
               letterSpacing: 0.4,
@@ -88,10 +88,10 @@ class _DebtListState extends State<DebtList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              colorCard("Total Debt", state.totalDebt.toDouble(),
-                  context, Color(0xFF17ead9)),
-              colorCard("Payment Debt", state.totalPayment.toDouble(),
-                  context, Color(0xFF6078ea)),
+              colorCard("Total Debt", state.totalDebt.toDouble(), context,
+                  Color(0xFF17ead9)),
+              colorCard("Payment Debt", state.totalPayment.toDouble(), context,
+                  Color(0xFF6078ea)),
             ],
           ),
           SizedBox(
@@ -100,7 +100,7 @@ class _DebtListState extends State<DebtList> {
           Text(
             "Payment Percent",
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
               inherit: true,
               letterSpacing: 0.4,
@@ -110,18 +110,14 @@ class _DebtListState extends State<DebtList> {
             height: 10,
           ),
           LinearPercentIndicator(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width - 32,
+            width: MediaQuery.of(context).size.width - 32,
             lineHeight: 20.0,
             animation: true,
             animateFromLastPercent: true,
-            percent: state.percent / 100,
+            percent: state.percent <= 100 ? state.percent / 100 : 1.0,
             center: Text(
               state.percent.toString() + "%",
-              style:
-              new TextStyle(fontSize: 12.0, color: Colors.white),
+              style: new TextStyle(fontSize: 12.0, color: Colors.white),
             ),
             linearStrokeCap: LinearStrokeCap.roundAll,
             backgroundColor: Colors.grey.shade300,
@@ -137,7 +133,7 @@ class _DebtListState extends State<DebtList> {
                   text: "Teams",
                   style: TextStyle(
                     color: Colors.black,
-                    fontSize: 24,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Varela",
                   ),
@@ -156,22 +152,20 @@ class _DebtListState extends State<DebtList> {
                   child: ListTile(
                     contentPadding: EdgeInsets.all(6),
                     leading: CircleAvatar(
-                      backgroundImage: NetworkImage(state.userModelList[index].photoUrl),
+                      backgroundImage:
+                          NetworkImage(state.userModelList[index].photoUrl),
                       radius: 25,
                     ),
-                    title:
-                    Text(state.userModelList[index].displayName),
+                    title: Text(state.userModelList[index].displayName),
                     subtitle: Text("The remaining amount : " +
-                        (state.userModelList[index].debtModel
-                            .totalDept -
-                            state.userModelList[index].debtModel
-                                .totalPayment)
+                        (state.userModelList[index].debtModel.totalDept -
+                                state.userModelList[index].debtModel
+                                    .totalPayment)
                             .toString() +
                         " TL"),
                     trailing: Icon(Icons.more_vert),
                     onTap: () {
-                      _showDebtBottomSheet(
-                          state.userModelList[index]);
+                      _showDebtBottomSheet(state.userModelList[index]);
                     },
                   ),
                 );
@@ -180,11 +174,10 @@ class _DebtListState extends State<DebtList> {
           ),
         ],
       );
-    }else{
+    } else {
       return Center(child: Container(child: Text("No User :(")));
     }
   }
-
 
 /*if (state is UserListFirestoreState) {
   } else {
