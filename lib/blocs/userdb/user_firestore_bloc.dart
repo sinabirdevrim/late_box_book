@@ -33,7 +33,13 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
       yield* _mapApUserCreateOrJoinFirestore(
           _userBloc.state.mUserModel, event.teamName, false);
     } else if (event is UserFirestoreGetUsereEvent) {
-      yield* _mapGetUserState(_userBloc.userTeam);
+      if (event.teamName != null) {
+        _sharedPrefManager.setTeam(event.teamName);
+        _userBloc.userTeam = event.teamName;
+        yield* _mapGetUserState(event.teamName);
+      } else {
+        yield* _mapGetUserState(_userBloc.userTeam);
+      }
     } else if (event is UserFirestoreUserUpdateEvent) {
       yield* _mapUserListUpdateToState(event.userModels, _userBloc.userTeam);
     } else if (event is UserFirestoreUpdateDebtEvent) {

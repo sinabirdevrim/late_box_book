@@ -27,6 +27,10 @@ class UserFirestoreJoinFireStoreEvent extends UserFirestoreEvent {
 }
 
 class UserFirestoreGetUsereEvent extends UserFirestoreEvent {
+  String teamName;
+
+  UserFirestoreGetUsereEvent([this.teamName]);
+
   @override
   // TODO: implement props
   List<Object> get props => null;

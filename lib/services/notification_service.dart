@@ -13,7 +13,7 @@ class NotificationService {
     };
 
     String json =
-        '{ "to" : "$token", "notification" : { "body" : "${message}", "title": "${title}", } }';
+        '{ "to" : "$token", "notification" : { "body" : "${message}", "title": "${title}", "sound": "default"} }';
 debugPrint(json);
     http.Response response =
         await http.post(endURL, headers: headers, body: json);

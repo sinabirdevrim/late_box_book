@@ -49,7 +49,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Stream<ProfileState> _mapGetUserInfos(String uid) async* {
-    debugPrint("çalıştıııı");
     _userProfileSubscription?.cancel();
     _userProfileSubscription =
         _userRepository.getUserAllDebtTeam(uid).listen((data) {
@@ -65,11 +64,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       totalDept += value.totalDebt;
       totalPayment += value.totalPayment;
       teamCount++;
-      debugPrint("girddddidiid");
     }
-    debugPrint("totalDept"  + totalDept.toString());
-    debugPrint("team"  + totalDept.toString());
-    debugPrint("team"  + teamCount.toString());
     add(ProfileUpdateUserInfoEvent(
         _userBloc.state.mUserModel, userDebtList, totalDept, totalPayment,teamCount));
   }

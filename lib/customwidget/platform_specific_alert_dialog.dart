@@ -8,13 +8,15 @@ class PlatformSpecificAlertDialog extends PlatformSpecificWidget {
   final String header;
   final String title;
   final String doneText;
-  final String cancelText;
+  final String donel2Text;
+  final Function(bool isDone) onDialogClick;
 
   PlatformSpecificAlertDialog(
       {@required this.header,
       @required this.title,
       @required this.doneText,
-      this.cancelText});
+      this.donel2Text,
+      this.onDialogClick});
 
   Future<bool> show(BuildContext context) async {
     return Platform.isIOS
@@ -48,12 +50,15 @@ class PlatformSpecificAlertDialog extends PlatformSpecificWidget {
     final buttons = <Widget>[];
 
     if (Platform.isIOS) {
-      if (cancelText != null) {
+      if (donel2Text != null) {
         buttons.add(
           CupertinoDialogAction(
-            child: Text(cancelText),
+            child: Text(donel2Text),
             onPressed: () {
               Navigator.of(context).pop(false);
+              if (onDialogClick != null) {
+                onDialogClick(false);
+              }
             },
           ),
         );
@@ -64,16 +69,30 @@ class PlatformSpecificAlertDialog extends PlatformSpecificWidget {
           child: Text(doneText),
           onPressed: () {
             Navigator.of(context).pop(true);
+            if (onDialogClick != null) {
+              onDialogClick(true);
+            }
+          },
+        ),
+      );
+      buttons.add(
+        CupertinoDialogAction(
+          child: Text("Cancel"),
+          onPressed: () {
+            Navigator.of(context).pop(true);
           },
         ),
       );
     } else {
-      if (cancelText != null) {
+      if (donel2Text != null) {
         buttons.add(
           FlatButton(
-            child: Text(cancelText),
+            child: Text(donel2Text),
             onPressed: () {
               Navigator.of(context).pop(false);
+              if (onDialogClick != null) {
+                onDialogClick(false);
+              }
             },
           ),
         );
@@ -81,7 +100,18 @@ class PlatformSpecificAlertDialog extends PlatformSpecificWidget {
 
       buttons.add(
         FlatButton(
-          child: Text("Ok"),
+          child: Text(doneText),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+            if (onDialogClick != null) {
+              onDialogClick(true);
+            }
+          },
+        ),
+      );
+      buttons.add(
+        FlatButton(
+          child: Text("Cancel"),
           onPressed: () {
             Navigator.of(context).pop(true);
           },

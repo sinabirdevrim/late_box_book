@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:late_box_book/blocs/profile/bloc.dart';
+import 'package:late_box_book/blocs/userdb/bloc.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile(PageStorageKey keyStorageHome) : super(key: keyStorageHome);
@@ -15,12 +16,14 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   File _profilePhoto;
   ProfileBloc _profileBloc;
+  UserFirestoreBloc _userFirestoreBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
+    _userFirestoreBloc = BlocProvider.of<UserFirestoreBloc>(context);
   }
 
   @override
@@ -125,7 +128,7 @@ class _UserProfileState extends State<UserProfile> {
           Column(
             children: <Widget>[
               Text(
-                state.totalDept.toString(),
+                state.totalDept.toString() + " TL",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -141,7 +144,7 @@ class _UserProfileState extends State<UserProfile> {
           Column(
             children: <Widget>[
               Text(
-                state.totalPaymnet.toString(),
+                state.totalPaymnet.toString() + " TL",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -161,8 +164,8 @@ class _UserProfileState extends State<UserProfile> {
 
   Expanded buildTeamListView(ProfileState state) {
     return Expanded(
-        child: ListView.builder(
-          padding:EdgeInsets.all(0) ,
+      child: ListView.builder(
+        padding: EdgeInsets.all(0),
         itemCount: state.userDebts.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
@@ -175,7 +178,9 @@ class _UserProfileState extends State<UserProfile> {
                       .toString() +
                   " TL"),
               trailing: Icon(Icons.more_vert),
-              onTap: () {},
+              onTap: () {
+                _userFirestoreBloc.add(UserFirestoreGetUsereEvent(state.userDebts[index].team));
+              },
             ),
           );
         },

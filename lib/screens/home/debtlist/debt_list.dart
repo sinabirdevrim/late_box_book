@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/blocs/userdb/bloc.dart';
+import 'package:late_box_book/customwidget/platform_specific_alert_dialog.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/widgets/home/bottomsheet/debt_edit_form.dart';
+import 'package:late_box_book/widgets/home/user_team_manager.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DebtList extends StatefulWidget {
@@ -54,7 +56,23 @@ class _DebtListState extends State<DebtList> {
                     Icons.exit_to_app,
                   ),
                   onPressed: () {
-                    BlocProvider.of<UserBloc>(context).add(UserLogOutEvent());
+                    PlatformSpecificAlertDialog(
+                      header: "User",
+                      title: "Log Out Or Chnage Team ?",
+                      doneText: 'Log Out',
+                      donel2Text: "Change Team",
+                      onDialogClick: (isDone) {
+                        if (isDone) {
+                          BlocProvider.of<UserBloc>(context)
+                              .add(UserLogOutEvent());
+                        }else {
+                          UserTeamManager().showUserTeamBottomSheet(
+                              true, context, _userFirestoreBloc);
+                        }
+                      },
+                    ).show(context);
+
+                    //
                   },
                 ),
               ],
