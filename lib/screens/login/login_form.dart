@@ -60,7 +60,7 @@ class _LoginFormState extends State<LoginForm> {
                     Expanded(
                       flex: 2,
                       child: Image.asset(
-                        "assets/login2.jpg",
+                        "assets/login2.png",
                       ),
                     )
                   ],
