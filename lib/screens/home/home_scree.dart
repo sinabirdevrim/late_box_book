@@ -59,22 +59,36 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  BottomNavigationBar buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.blue,
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home), title: Text("HomePage")),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.book), title: Text("My Acount")),
-      ],
-      currentIndex: bottomIndex,
-      onTap: (index) {
-        setState(() {
-          navigationTapped(index);
-        });
-      },
+  Widget buildBottomNavigationBar() {
+    return Theme(
+      data: Theme.of(context).copyWith(
+        // sets the background color of the `BottomNavigationBar`
+        canvasColor: Theme.of(context).primaryColor,
+        // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+        primaryColor: Theme.of(context).accentColor,
+        textTheme: Theme
+            .of(context)
+            .textTheme
+            .copyWith(caption: TextStyle(color: Colors.grey[500]),
+        ),
+      ),
+      child: BottomNavigationBar(
+
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.black,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text("HomePage")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.book), title: Text("My Profile")),
+        ],
+        currentIndex: bottomIndex,
+        onTap: (index) {
+          setState(() {
+            navigationTapped(index);
+          });
+        },
+      ),
     );
   }
 

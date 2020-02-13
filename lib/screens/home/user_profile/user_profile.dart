@@ -177,7 +177,6 @@ class _UserProfileState extends State<UserProfile> {
                           state.userDebts[index].totalPayment)
                       .toString() +
                   " TL"),
-              trailing: Icon(Icons.more_vert),
               onTap: () {
                 _userFirestoreBloc.add(UserFirestoreGetUsereEvent(state.userDebts[index].team));
               },
