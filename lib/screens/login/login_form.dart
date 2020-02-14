@@ -39,8 +39,9 @@ class _LoginFormState extends State<LoginForm> {
                   doneText: 'Done',
                 ).show(context);
               });
-            }else if (state is LoginLoadedState){
-              BlocProvider.of<UserBloc>(context).add(UserLoginEvent(state.mUserModel,false));
+            } else if (state is LoginLoadedState) {
+              BlocProvider.of<UserBloc>(context)
+                  .add(UserLoginEvent(state.mUserModel, false));
             }
           },
           child: Padding(
@@ -72,7 +73,9 @@ class _LoginFormState extends State<LoginForm> {
                   this._email = _email;
                 }, (_password) {
                   this._password = _password;
-                }, _formKey),
+                }, _formKey, (onForgotPasswordClick) {
+                  //TODO: forgot paswword
+                }),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

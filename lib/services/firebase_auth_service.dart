@@ -85,4 +85,13 @@ class FirebaseAuthService {
         user.email, user.phoneNumber, user.uid);
     return response;
   }
+
+  Future<bool> forgotPassword(String email) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

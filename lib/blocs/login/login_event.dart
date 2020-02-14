@@ -18,3 +18,14 @@ class LoginUserEvent extends LoginEvent {
 
   String get userName => _userName;
 }
+
+class ForgotPasswordEvent extends LoginEvent{
+  String email;
+
+  ForgotPasswordEvent(this.email);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [email];
+
+}

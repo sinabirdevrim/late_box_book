@@ -29,7 +29,6 @@ class _DebtListState extends State<DebtList> {
         bloc: _userFirestoreBloc,
         builder: (context, UserFirestoreState state) {
           return Scaffold(
-            backgroundColor: Colors.white,
             appBar: AppBar(
               title: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +57,7 @@ class _DebtListState extends State<DebtList> {
                   onPressed: () {
                     PlatformSpecificAlertDialog(
                       header: "User",
-                      title: "Log Out Or Chnage Team ?",
+                      title: "Log Out Or Change Team?",
                       doneText: 'Log Out',
                       donel2Text: "Change Team",
                       onDialogClick: (isDone) {
@@ -166,24 +165,35 @@ class _DebtListState extends State<DebtList> {
             child: ListView.builder(
               itemCount: state.userModelList.length,
               itemBuilder: (BuildContext context, int index) {
+                var data = state.userModelList[index];
                 return Card(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(5),
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(state.userModelList[index].photoUrl),
-                      radius: 28,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
                     ),
-                    title: Text(state.userModelList[index].displayName),
-                    subtitle: Text("The remaining amount : " +
-                        (state.userModelList[index].debtModel.totalDept -
-                                state.userModelList[index].debtModel
-                                    .totalPayment)
-                            .toString() +
-                        " TL"),
-                    trailing: Icon(Icons.more_vert),
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(data.photoUrl),
+                      radius: 25,
+                    ),
+                    title: Text(data.displayName),
+                    subtitle: Text(
+                        "${data.debtModel.updatedAt.day}/${data.debtModel.updatedAt.month}/${data.debtModel.updatedAt.year}"),
+                    trailing: Text(
+                      (data.debtModel.totalDept - data.debtModel.totalPayment)
+                              .toString() +
+                          " TL",
+                      style: TextStyle(
+                          color: (data.debtModel.totalDept -
+                                      data.debtModel.totalPayment) >
+                                  0
+                              ? Colors.red
+                              : Colors.green),
+                    ),
                     onTap: () {
-                      _showDebtBottomSheet(state.userModelList[index]);
+                      _showDebtBottomSheet(data);
                     },
                   ),
                 );
@@ -198,7 +208,6 @@ class _DebtListState extends State<DebtList> {
       return Center(child: CircularProgressIndicator());
     }
   }
-
 
   void _showDebtBottomSheet(UserModel userModel) {
     showModalBottomSheet(

@@ -92,4 +92,8 @@ class UserRepository {
   Stream<List<UserDebt>> getUserAllDebtTeam(String uid) {
     return _firestoreDBService.getUserAllDebtTeam(uid);
   }
+
+  Future<bool> forgotPassword(String email) async {
+    return _firebaseAuthService.forgotPassword(email);
+  }
 }

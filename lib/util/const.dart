@@ -4,7 +4,7 @@ class Constants{
   static String appName = "LateBoxBook";
 
   //Colors for theme
-  static Color lightPrimary = Colors.white;
+  static Color lightPrimary = Color(0xfffcfcff);
   static Color darkPrimary = Colors.black;
   static Color lightAccent = Colors.blue;
   static Color darkAccent = Colors.blueAccent;
@@ -14,7 +14,7 @@ class Constants{
 
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
-    primaryColor: Colors.white,
+    primaryColor: lightPrimary,
     accentColor:  lightAccent,
     cursorColor: lightAccent,
     scaffoldBackgroundColor: lightBG,

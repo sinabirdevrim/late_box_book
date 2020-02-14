@@ -30,7 +30,6 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         body: Container(
           width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(16.0),
@@ -170,8 +169,13 @@ class _UserProfileState extends State<UserProfile> {
         itemCount: state.userDebts.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
             child: ListTile(
-              contentPadding: EdgeInsets.all(6),
               title: Text("Team Name: " + state.userDebts[index].team),
               subtitle: Text("The remaining amount : " +
                   (state.userDebts[index].totalDebt -

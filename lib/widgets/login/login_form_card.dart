@@ -4,9 +4,10 @@ import 'package:late_box_book/customwidget/lb_text_form.dart';
 class LoginFormCard extends StatefulWidget {
   Function(String _email) funcEmail;
   Function(String _password) funcPassword;
+  Function(bool isForgotPassword) funcForgotPassword;
   GlobalKey<FormState> _formKey;
 
-  LoginFormCard(this.funcEmail, this.funcPassword, this._formKey);
+  LoginFormCard(this.funcEmail, this.funcPassword, this._formKey,this.funcForgotPassword);
 
   @override
   _LoginFormCardState createState() => _LoginFormCardState();
@@ -38,10 +39,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Login",
-                  style: TextStyle(
-                      fontSize: 25,
-                      letterSpacing: .6)),
+              Text("Login", style: TextStyle(fontSize: 25, letterSpacing: .6)),
               SizedBox(
                 height: 15,
               ),
@@ -61,7 +59,7 @@ class _LoginFormCardState extends State<LoginFormCard> {
                 onSaved: (String value) {
                   widget.funcPassword(value);
                 },
-                labelText: "PassWord",
+                labelText: "Password",
               ),
               SizedBox(
                 height: 20,
@@ -69,11 +67,14 @@ class _LoginFormCardState extends State<LoginFormCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 14),
+                  InkWell(
+                    child: Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: Colors.blue, fontSize: 14),
+                    ),
+                    onTap: () {
+                     widget.funcForgotPassword(true);
+                    },
                   )
                 ],
               )

@@ -84,6 +84,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     var user = userModels.singleWhere((user) => user.uid == uid);
     user.debtModel.totalDept = totalDept;
     user.debtModel.totalPayment = totalPayment;
+    user.debtModel.updatedAt =DateTime.now();
     await _userRepository.updateUserDebt(teamName, user.uid, user.debtModel);
     await _userRepository.sendPushNotification(user.pushToken, user.debtModel);
   }
