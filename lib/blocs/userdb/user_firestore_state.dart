@@ -43,3 +43,17 @@ class UserListFirestoreState extends UserFirestoreState {
   // TODO: implement props
   List<Object> get props => [userModelList];
 }
+
+class UserEmptyFirestoreState extends UserFirestoreState {
+  @override
+  // TODO: implement props
+  List<Object> get props => null;
+}
+
+
+class UserLoadingFirestoreState extends UserFirestoreState {
+  @override
+  // TODO: implement props
+  List<Object> get props => null;
+}
+

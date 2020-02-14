@@ -36,6 +36,7 @@ dependencies:
   flutter_local_notifications: ^1.1.6
   image_picker: ^0.6.2+3
   shared_preferences: ^0.5.6+1
+  toast: ^0.1.5
 
 dev_dependencies:
   flutter_test:

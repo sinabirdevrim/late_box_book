@@ -96,6 +96,13 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
 
   Stream<UserFirestoreState> _mapUserListUpdateToState(
       List<UserModel> _userModels, String teamName) async* {
-    yield UserListFirestoreState(_userModels, teamName);
+    if (_userModels == null ||
+        _userModels.length == 0 ||
+        teamName == null ||
+        teamName.isEmpty) {
+      yield UserEmptyFirestoreState();
+    } else {
+      yield UserListFirestoreState(_userModels, teamName);
+    }
   }
 }

@@ -65,7 +65,7 @@ class _DebtListState extends State<DebtList> {
                         if (isDone) {
                           BlocProvider.of<UserBloc>(context)
                               .add(UserLogOutEvent());
-                        }else {
+                        } else {
                           UserTeamManager().showUserTeamBottomSheet(
                               true, context, _userFirestoreBloc);
                         }
@@ -168,11 +168,11 @@ class _DebtListState extends State<DebtList> {
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(6),
+                    contentPadding: EdgeInsets.all(5),
                     leading: CircleAvatar(
                       backgroundImage:
                           NetworkImage(state.userModelList[index].photoUrl),
-                      radius: 25,
+                      radius: 28,
                     ),
                     title: Text(state.userModelList[index].displayName),
                     subtitle: Text("The remaining amount : " +
@@ -192,16 +192,14 @@ class _DebtListState extends State<DebtList> {
           ),
         ],
       );
-    } else {
+    } else if (state is UserEmptyFirestoreState) {
       return Center(child: Container(child: Text("No User :(")));
+    } else {
+      return Center(child: CircularProgressIndicator());
     }
   }
 
-/*if (state is UserListFirestoreState) {
-  } else {
-  return Center(child: Container(child: Text("No User :(")));
-  }
-  */
+
   void _showDebtBottomSheet(UserModel userModel) {
     showModalBottomSheet(
         isScrollControlled: true,

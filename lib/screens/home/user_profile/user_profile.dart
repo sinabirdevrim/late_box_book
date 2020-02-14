@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:late_box_book/blocs/profile/bloc.dart';
 import 'package:late_box_book/blocs/userdb/bloc.dart';
+import 'package:toast/toast.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile(PageStorageKey keyStorageHome) : super(key: keyStorageHome);
@@ -53,7 +54,7 @@ class _UserProfileState extends State<UserProfile> {
                           radius: 50,
                         ),
                         onTap: () {
-                          _onGalery();
+                          _onGallery();
                         },
                       ),
                       SizedBox(height: 10),
@@ -179,6 +180,7 @@ class _UserProfileState extends State<UserProfile> {
                   " TL"),
               onTap: () {
                 _userFirestoreBloc.add(UserFirestoreGetUsereEvent(state.userDebts[index].team));
+                Toast.show("Your team has been changed to ${state.userDebts[index].team}", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
               },
             ),
           );
@@ -187,7 +189,7 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-  void _onGalery() async {
+  void _onGallery() async {
     var _photo = await ImagePicker.pickImage(source: ImageSource.gallery);
     _profileBloc.add(ProfileUpdateImageEvent(_photo));
     setState(() {
