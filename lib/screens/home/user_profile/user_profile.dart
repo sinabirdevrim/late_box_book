@@ -31,76 +31,76 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.all(16.0),
-          child: BlocBuilder(
-              bloc: _profileBloc,
-              builder: (_, ProfileState state) {
-                if (state is InitialProfileState ||
-                    state is ProfileUpdateUserState) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 40),
-                      GestureDetector(
-                        child: CircleAvatar(
-                          backgroundImage: _profilePhoto != null
-                              ? FileImage(_profilePhoto)
-                              : NetworkImage(
-                                  state.mUserModel.photoUrl,
-                                ),
-                          radius: 50,
-                        ),
-                        onTap: () {
-                          _onGallery();
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        state.mUserModel.displayName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 22,
-                        ),
-                      ),
-                      SizedBox(height: 3),
-                      Text(
-                        state.mUserModel.email,
-                        style: TextStyle(),
-                      ),
-                      SizedBox(height: 25),
-                      buildUserDebtInfos(state),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Your Teams",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Varela",
-                                  ),
-                                ),
-                              ],
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.all(16.0),
+      child: BlocBuilder(
+          bloc: _profileBloc,
+          builder: (_, ProfileState state) {
+            if (state is InitialProfileState ||
+                state is ProfileUpdateUserState) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 40),
+                  GestureDetector(
+                    child: CircleAvatar(
+                      backgroundImage: _profilePhoto != null
+                          ? FileImage(_profilePhoto)
+                          : NetworkImage(
+                              state.mUserModel.photoUrl,
                             ),
-                          ),
-                        ],
+                      radius: 50,
+                    ),
+                    onTap: () {
+                      _onGallery();
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    state.mUserModel.displayName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                    ),
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    state.mUserModel.email,
+                    style: TextStyle(),
+                  ),
+                  SizedBox(height: 25),
+                  buildUserDebtInfos(state),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Your Teams",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Varela",
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      buildTeamListView(state),
                     ],
-                  );
-                } else {
-                  return Text("Loading");
-                }
-              }),
-        ));
+                  ),
+                  buildTeamListView(state),
+                ],
+              );
+            } else {
+              return Text("Loading");
+            }
+          }),
+    ));
   }
 
   Padding buildUserDebtInfos(ProfileState state) {
@@ -128,7 +128,7 @@ class _UserProfileState extends State<UserProfile> {
           Column(
             children: <Widget>[
               Text(
-                state.totalDept.toString() + " TL",
+                state.totalDept.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -144,7 +144,7 @@ class _UserProfileState extends State<UserProfile> {
           Column(
             children: <Widget>[
               Text(
-                state.totalPaymnet.toString() + " TL",
+                state.totalPaymnet.toString(),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
@@ -181,10 +181,15 @@ class _UserProfileState extends State<UserProfile> {
                   (state.userDebts[index].totalDebt -
                           state.userDebts[index].totalPayment)
                       .toString() +
-                  " TL"),
+                  " ${state.userDebts[index].currencyType!=null?state.userDebts[index].currencyType:"TL"}"),
               onTap: () {
-                _userFirestoreBloc.add(UserFirestoreGetUsereEvent(state.userDebts[index].team));
-                Toast.show("Your team has been changed to ${state.userDebts[index].team}", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                _userFirestoreBloc.add(
+                    UserFirestoreGetUsereEvent(state.userDebts[index].team));
+                Toast.show(
+                    "Your team has been changed to ${state.userDebts[index].team}",
+                    context,
+                    duration: Toast.LENGTH_LONG,
+                    gravity: Toast.BOTTOM);
               },
             ),
           );

@@ -38,6 +38,8 @@ class FirestoreDBService {
           .collection(FBConst.TEAM_COLLECTION)
           .document(team)
           .setData({
+        "currencyType":
+            userModel.isMaster ? userModel.debtModel.currencyType : "",
         "team": team,
         "isMaster": userModel.isMaster,
         "totalDebt": 0,

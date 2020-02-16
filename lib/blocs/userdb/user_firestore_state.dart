@@ -22,6 +22,7 @@ class UserListFirestoreState extends UserFirestoreState {
   int totalDebt = 0;
   int totalPayment = 0;
   double percent = 0.0;
+  String currencyType;
 
   UserListFirestoreState(List<UserModel> userModelList, String teamName) {
     super.userModelList = userModelList;
@@ -37,6 +38,9 @@ class UserListFirestoreState extends UserFirestoreState {
     if (totalDebt != 0) {
       percent = ((totalPayment * 100) / totalDebt).toDouble();
     }
+
+    currencyType =
+        userModelList.firstWhere((t) => t.isMaster).debtModel.currencyType;
   }
 
   @override
@@ -50,10 +54,8 @@ class UserEmptyFirestoreState extends UserFirestoreState {
   List<Object> get props => null;
 }
 
-
 class UserLoadingFirestoreState extends UserFirestoreState {
   @override
   // TODO: implement props
   List<Object> get props => null;
 }
-

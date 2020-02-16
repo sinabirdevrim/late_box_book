@@ -3,6 +3,7 @@ class UserDebt {
   bool _isMaster;
   int _totalPayment = 0;
   int _totalDebt = 0;
+  String _currencyType = "";
 
   String get team => _team;
 
@@ -15,7 +16,8 @@ class UserDebt {
       'team': _team,
       'isMaster': _isMaster,
       'totalDebt': _totalDebt,
-      'totalPayment': _totalPayment
+      'totalPayment': _totalPayment,
+      'currencyType': _currencyType
     };
   }
 
@@ -23,9 +25,16 @@ class UserDebt {
       : _team = map['team'],
         _isMaster = map['isMaster'],
         _totalDebt = map['totalDebt'],
-        _totalPayment = map['totalPayment'];
+        _totalPayment = map['totalPayment'],
+        _currencyType = map['currencyType'];
 
   bool get isMaster => _isMaster;
+
+  String get currencyType => _currencyType;
+
+  set currencyType(String value) {
+    _currencyType = value;
+  }
 
   int get totalDebt => _totalDebt;
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
 
 class RegisterTeamForm extends StatefulWidget {
-  Function(String teamName, bool isCreate) _funcOnTeam;
-  String _teamName;
+  Function(String teamName, bool isCreate, String currencyType) _funcOnTeam;
+  String _teamName, _currencyType;
 
   RegisterTeamForm(this._funcOnTeam);
 
@@ -35,6 +35,16 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
                   widget._teamName = value;
                 },
                 labelText: "Team Name",
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              LBTextFormField(
+                hintText: "Enter Currency Type (Only Master)",
+                onSaved: (String value) {
+                  widget._currencyType = value;
+                },
+                labelText: "Currency Type Short(Exp: TL)",
               ),
               SizedBox(
                 height: 20,
@@ -131,6 +141,6 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
 
   void _formSubmit(bool isCreate) {
     _formKey.currentState.save();
-    widget._funcOnTeam(widget._teamName, isCreate);
+    widget._funcOnTeam(widget._teamName, isCreate, widget._currencyType);
   }
 }

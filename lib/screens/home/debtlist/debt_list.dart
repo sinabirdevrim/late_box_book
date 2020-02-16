@@ -106,10 +106,14 @@ class _DebtListState extends State<DebtList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              colorCard("Total Debt", state.totalDebt.toDouble(), context,
-                  Color(0xFF17ead9)),
+              colorCard(
+                  "Total Debt",
+                  state.totalDebt.toDouble(),
+                  context,
+                  Color(0xFF17ead9),
+                  state.currencyType != null ? state.currencyType : "TL"),
               colorCard("Payment Debt", state.totalPayment.toDouble(), context,
-                  Color(0xFF6078ea)),
+                  Color(0xFF6078ea),  state.currencyType != null ? state.currencyType : "TL"),
             ],
           ),
           SizedBox(
@@ -185,7 +189,7 @@ class _DebtListState extends State<DebtList> {
                     trailing: Text(
                       (data.debtModel.totalDept - data.debtModel.totalPayment)
                               .toString() +
-                          " TL",
+                          (" ${state.currencyType != null ? state.currencyType :" TL"}"),
                       style: TextStyle(
                           color: (data.debtModel.totalDept -
                                       data.debtModel.totalPayment) >
@@ -234,8 +238,9 @@ class _DebtListState extends State<DebtList> {
         });
   }
 }
-Widget colorCard(
-    String text, double amount, BuildContext context, Color color) {
+
+Widget colorCard(String text, double amount, BuildContext context, Color color,
+    String currencyType) {
   final _media = MediaQuery.of(context).size;
   return Container(
     padding: EdgeInsets.all(15),
@@ -264,7 +269,7 @@ Widget colorCard(
           ),
         ),
         Text(
-          amount.toString() + " TL",
+          amount.toString() + " $currencyType",
           style: TextStyle(
             fontSize: 22,
             color: Colors.white,

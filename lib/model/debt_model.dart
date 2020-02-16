@@ -5,6 +5,7 @@ class DebtModel {
   DateTime _updatedAt;
   int _totalDept = 0;
   int _totalPayment = 0;
+  String _currencyType="";
 
   DebtModel();
 
@@ -32,12 +33,19 @@ class DebtModel {
     _totalPayment = value;
   }
 
+  String get currencyType => _currencyType;
+
+  set currencyType(String value) {
+    _currencyType = value;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'createdAt': _createdAt ?? FieldValue.serverTimestamp(),
       'updatedAt': _updatedAt ?? FieldValue.serverTimestamp(),
       'totalDept': _totalDept,
-      'totalPayment': _totalPayment
+      'totalPayment': _totalPayment,
+      'currencyType': _currencyType
     };
   }
 
@@ -45,5 +53,6 @@ class DebtModel {
       : _createdAt = (map['createdAt'] as Timestamp).toDate(),
         _updatedAt = (map['updatedAt'] as Timestamp).toDate(),
         _totalDept = map['totalDept'],
-        _totalPayment = map['totalPayment'];
+        _totalPayment = map['totalPayment'],
+        _currencyType = map['currencyType'];
 }

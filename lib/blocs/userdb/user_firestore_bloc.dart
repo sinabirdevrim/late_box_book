@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/common/shared_pref_manager.dart';
+import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
@@ -28,7 +29,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
   Stream<UserFirestoreState> mapEventToState(UserFirestoreEvent event) async* {
     if (event is UserFirestoreCreateFireStoreEvent) {
       yield* _mapApUserCreateOrJoinFirestore(
-          _userBloc.state.mUserModel, event.teamName, true);
+          _userBloc.state.mUserModel, event.teamName, true, event.currencyType);
     } else if (event is UserFirestoreJoinFireStoreEvent) {
       yield* _mapApUserCreateOrJoinFirestore(
           _userBloc.state.mUserModel, event.teamName, false);
@@ -64,8 +65,13 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
   }
 
   Stream<UserFirestoreState> _mapApUserCreateOrJoinFirestore(
-      UserModel user, String teamName, bool isMaster) async* {
+      UserModel user, String teamName, bool isMaster,
+      [String currencyType]) async* {
     user.isMaster = isMaster;
+    if (isMaster && currencyType != null && currencyType.isNotEmpty) {
+      user.debtModel = DebtModel();
+      user.debtModel.currencyType = currencyType;
+    }
     if (isMaster) {
       await _userRepository.createTeamName(teamName, user);
     } else {
@@ -84,7 +90,7 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     var user = userModels.singleWhere((user) => user.uid == uid);
     user.debtModel.totalDept = totalDept;
     user.debtModel.totalPayment = totalPayment;
-    user.debtModel.updatedAt =DateTime.now();
+    user.debtModel.updatedAt = DateTime.now();
     await _userRepository.updateUserDebt(teamName, user.uid, user.debtModel);
     await _userRepository.sendPushNotification(user.pushToken, user.debtModel);
   }

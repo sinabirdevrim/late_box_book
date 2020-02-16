@@ -20,6 +20,8 @@ class InitialProfileState extends ProfileState {
 }
 
 class ProfileUpdateUserState extends ProfileState {
+  String currencyType;
+
   ProfileUpdateUserState(UserModel userModel, int mTotalDept, int mTotalPayment,
       List<UserDebt> mUserDebts, int mTeamCount) {
     mUserModel = userModel;
@@ -28,6 +30,10 @@ class ProfileUpdateUserState extends ProfileState {
     userDebts.clear();
     userDebts.addAll(mUserDebts);
     teamCount = mTeamCount;
+  }
+
+  void setCurrencyType() {
+    currencyType = userDebts.firstWhere((t) => t.isMaster).currencyType;
   }
 
   @override

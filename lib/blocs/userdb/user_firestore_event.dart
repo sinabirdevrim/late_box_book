@@ -7,13 +7,13 @@ abstract class UserFirestoreEvent extends Equatable {
 }
 
 class UserFirestoreCreateFireStoreEvent extends UserFirestoreEvent {
-  String teamName;
+  String teamName,currencyType;
 
-  UserFirestoreCreateFireStoreEvent(this.teamName);
+  UserFirestoreCreateFireStoreEvent(this.teamName,this.currencyType);
 
   @override
   // TODO: implement props
-  List<Object> get props => [teamName];
+  List<Object> get props => [teamName,currencyType];
 }
 
 class UserFirestoreJoinFireStoreEvent extends UserFirestoreEvent {
