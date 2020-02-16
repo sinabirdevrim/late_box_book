@@ -22,6 +22,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         yield LoginLoadedState(result.data);
       }
+    } else if (event is ForgotPasswordEvent) {
+      yield* _mapResetPassword(event.email);
     }
+  }
+
+  Stream<LoginState> _mapResetPassword(String email) async* {
+    await _userRepository.forgotPassword(email);
   }
 }

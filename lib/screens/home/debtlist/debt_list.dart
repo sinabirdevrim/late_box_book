@@ -6,6 +6,7 @@ import 'package:late_box_book/customwidget/platform_specific_alert_dialog.dart';
 import 'package:late_box_book/model/user_model.dart';
 import 'package:late_box_book/widgets/home/bottomsheet/debt_edit_form.dart';
 import 'package:late_box_book/widgets/home/user_team_manager.dart';
+import 'package:late_box_book/widgets/login/bottomsheet/forgot_password_bottom_sheet.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DebtList extends StatefulWidget {
@@ -233,7 +234,6 @@ class _DebtListState extends State<DebtList> {
         });
   }
 }
-
 Widget colorCard(
     String text, double amount, BuildContext context, Color color) {
   final _media = MediaQuery.of(context).size;

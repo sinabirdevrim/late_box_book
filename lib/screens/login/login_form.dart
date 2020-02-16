@@ -6,6 +6,7 @@ import 'package:late_box_book/blocs/login/login_bloc.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/customwidget/platform_specific_alert_dialog.dart';
 import 'package:late_box_book/screens/register/register_screen.dart';
+import 'package:late_box_book/widgets/login/bottomsheet/forgot_password_bottom_sheet.dart';
 import 'package:late_box_book/widgets/login/login_form_card.dart';
 
 class LoginForm extends StatefulWidget {
@@ -69,13 +70,17 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(
                   height: 10,
                 ),
-                LoginFormCard((_email) {
-                  this._email = _email;
-                }, (_password) {
-                  this._password = _password;
-                }, _formKey, (onForgotPasswordClick) {
-                  //TODO: forgot paswword
-                }),
+                LoginFormCard(
+                    (_email) {
+                      this._email = _email;
+                    },
+                    (_password) {
+                      this._password = _password;
+                    },
+                    _formKey,
+                    (onForgotPasswordClick) {
+                      showForgotPasswordBottomSheet(context);
+                    }),
                 SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -151,10 +156,26 @@ class _LoginFormState extends State<LoginForm> {
     if (state is LoginLoadingState) {
       return CircularProgressIndicator();
     } else {
-      return Text("SignIn",
+      return Text("Sign in",
           style:
               TextStyle(color: Colors.white, fontSize: 18, letterSpacing: 1.0));
     }
+  }
+
+  void showForgotPasswordBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (_) {
+          return SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: ForgotPasswordForm((email) {
+                    _loginBloc.add(ForgotPasswordEvent(email));
+                    Navigator.pop(context);
+                  })));
+        });
   }
 
   _formSubmit(LoginBloc loginBloc) {
