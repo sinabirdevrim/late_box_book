@@ -9,6 +9,10 @@ This is scrum daliy late box app
 - Get_It dependency injection
 - Shared Preferences
 
+<b>Google Play Link</b><br/>
+https://play.google.com/store/apps/details?id=com.onerevolutionstudio.lateboxbook
+<br/>
+
 <b>Android Screen</b>
 <br/>
 <img src="screens/home.png" height="800" widht="600"/>
