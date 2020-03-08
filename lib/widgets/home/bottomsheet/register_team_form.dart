@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class RegisterTeamForm extends StatefulWidget {
   Function(String teamName, bool isCreate, String currencyType) _funcOnTeam;
@@ -39,12 +40,23 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
               SizedBox(
                 height: 15,
               ),
-              LBTextFormField(
-                hintText: "Enter Currency Type (Only Master)",
-                onSaved: (String value) {
-                  widget._currencyType = value;
+              SearchableDropdown.single(
+                items: getCurrencyList(),
+                value: widget._currencyType,
+                hint: "Currency Type",
+                searchHint: "Select one",
+                underline: Container(
+                  height: 1.0,
+                  decoration: BoxDecoration(
+                      border:
+                      Border(bottom: BorderSide(color: Colors.grey))),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    widget._currencyType = value;
+                  });
                 },
-                labelText: "Currency Type Short(Exp: TL)",
+                isExpanded: true,
               ),
               SizedBox(
                 height: 20,
@@ -142,5 +154,13 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
   void _formSubmit(bool isCreate) {
     _formKey.currentState.save();
     widget._funcOnTeam(widget._teamName, isCreate, widget._currencyType);
+  }
+
+  List<DropdownMenuItem> getCurrencyList() {
+    return [
+      DropdownMenuItem(child: Text("TL"), value: "TL"),
+      DropdownMenuItem(child: Text(r"$"), value: r"$"),
+      DropdownMenuItem(child: Text(r"£"), value: r"£"),
+    ];
   }
 }

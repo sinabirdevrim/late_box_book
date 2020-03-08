@@ -76,7 +76,7 @@ class _DeptEditFormState extends State<DeptEditForm> {
                       },
                       child: Center(
                         child: Text(
-                          "Edit",
+                          "Update",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

@@ -37,6 +37,7 @@ dependencies:
   image_picker: ^0.6.2+3
   shared_preferences: ^0.5.6+1
   toast: ^0.1.5
+  searchable_dropdown: ^1.1.2
 
 dev_dependencies:
   flutter_test:
