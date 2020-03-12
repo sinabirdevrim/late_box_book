@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/common/locator.dart';
+import 'package:late_box_book/common/schedule_notification.dart';
 import 'package:late_box_book/common/shared_pref_manager.dart';
 import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_model.dart';
@@ -28,8 +30,8 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
   @override
   Stream<UserFirestoreState> mapEventToState(UserFirestoreEvent event) async* {
     if (event is UserFirestoreCreateFireStoreEvent) {
-      yield* _mapApUserCreateOrJoinFirestore(
-          _userBloc.state.mUserModel, event.teamName, true, event.currencyType);
+      yield* _mapApUserCreateOrJoinFirestore(_userBloc.state.mUserModel,
+          event.teamName, true, event.currencyType, event.dailyTime);
     } else if (event is UserFirestoreJoinFireStoreEvent) {
       yield* _mapApUserCreateOrJoinFirestore(
           _userBloc.state.mUserModel, event.teamName, false);
@@ -66,11 +68,12 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
 
   Stream<UserFirestoreState> _mapApUserCreateOrJoinFirestore(
       UserModel user, String teamName, bool isMaster,
-      [String currencyType]) async* {
+      [String currencyType, DateTime dailyTime]) async* {
     user.isMaster = isMaster;
     if (isMaster && currencyType != null && currencyType.isNotEmpty) {
       user.debtModel = DebtModel();
       user.debtModel.currencyType = currencyType;
+      user.dailyTime = dailyTime;
     }
     if (isMaster) {
       await _userRepository.createTeamName(teamName, user);
@@ -109,6 +112,11 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
         teamName.isEmpty) {
       yield UserEmptyFirestoreState();
     } else {
+      var teamDailyTime = _userModels.where((t) => t.isMaster).first.dailyTime;
+      if (teamDailyTime != null) {
+        ScheduleNotificationManager().dailyNotification(Time(
+            teamDailyTime.hour, teamDailyTime.minute, teamDailyTime.second));
+      }
       yield UserListFirestoreState(_userModels, teamName);
     }
   }

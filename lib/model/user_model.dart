@@ -16,6 +16,7 @@ class UserModel {
   DebtModel _debtModel;
   bool _isMaster = false;
   String _pushToken;
+  DateTime _dailyTime;
 
   DateTime get createdAt => _createdAt;
 
@@ -85,6 +86,13 @@ class UserModel {
     _debtModel = value;
   }
 
+  DateTime get dailyTime => _dailyTime;
+
+  set dailyTime(DateTime value) {
+    _dailyTime = value;
+  }
+
+
   Map<String, dynamic> toMap() {
     return {
       'userID': _uid,
@@ -96,21 +104,25 @@ class UserModel {
       'updatedAt': FieldValue.serverTimestamp(),
       'debt': _debtModel == null ? new DebtModel().toMap() : _debtModel.toMap(),
       'isMaster': _isMaster,
-      'pushToken': pushToken
+      'pushToken': pushToken,
+      'dailyTime': _dailyTime
     };
   }
 
-  UserModel.fromMap(Map<String, dynamic> map)
-      : _uid = map['userID'],
-        _email = map['email'],
-        _displayName = map['userName'],
-        _photoUrl = map['profilURL'],
-        _createdAt = (map['createdAt'] as Timestamp).toDate(),
-        _updatedAt = (map['updatedAt'] as Timestamp).toDate(),
-        _debtModel =
-            DebtModel.fromMap(new Map<String, dynamic>.from(map["debt"])),
-        _isMaster = map['isMaster'],
-        _pushToken = map['pushToken'];
+  UserModel.fromMap(Map<String, dynamic> map) {
+    _uid = map['userID'];
+    _email = map['email'];
+    _displayName = map['userName'];
+    _photoUrl = map['profilURL'];
+    _createdAt = (map['createdAt'] as Timestamp).toDate();
+    _updatedAt = (map['updatedAt'] as Timestamp).toDate();
+    _debtModel = DebtModel.fromMap(new Map<String, dynamic>.from(map["debt"]));
+    _isMaster = map['isMaster'];
+    _pushToken = map['pushToken'];
+    if (map["dailyTime"] != null) {
+      _dailyTime = (map['dailyTime'] as Timestamp).toDate();
+    }
+  }
 
   DateTime get updatedAt => _updatedAt;
 }

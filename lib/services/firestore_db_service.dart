@@ -4,6 +4,7 @@ import 'package:late_box_book/model/base_model.dart';
 import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_dept.dart';
 import 'package:late_box_book/model/user_model.dart';
+import 'package:late_box_book/model/user_team.dart';
 import 'package:late_box_book/services/fb_const.dart';
 
 class FirestoreDBService {
@@ -71,7 +72,7 @@ class FirestoreDBService {
     }
   }
 
-  Future<List<String>> getUserTeam(String uid) async {
+  Future<List<UserTeamModel>> getUserTeam(String uid) async {
     try {
       var data = await _firebaseDB
           .collection(FBConst.TEAM_USER_COLLECTION)
@@ -79,11 +80,11 @@ class FirestoreDBService {
           .collection(FBConst.TEAM_COLLECTION)
           .getDocuments();
       return data.documentChanges
-          .map((t) => t.document.data["team"].toString())
+          .map((t) => UserTeamModel.fromMap(t.document.data))
           .toList();
     } catch (e) {
       debugPrint("Hata: " + e.toString());
-      return List<String>();
+      return List<UserTeamModel>();
     }
   }
 

@@ -17,10 +17,11 @@ class UserTeamManager {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: RegisterTeamForm((teamName, isMaster, currencyType) {
+                child: RegisterTeamForm(
+                    (teamName, isMaster, currencyType, dailyStartTime) {
                   if (isMaster) {
-                    _userFirestoreBloc
-                        .add(UserFirestoreCreateFireStoreEvent(teamName,currencyType));
+                    _userFirestoreBloc.add(UserFirestoreCreateFireStoreEvent(
+                        teamName, currencyType, dailyStartTime));
                   } else {
                     _userFirestoreBloc
                         .add(UserFirestoreJoinFireStoreEvent(teamName));

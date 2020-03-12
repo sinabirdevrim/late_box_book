@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/model/base_model.dart';
 import 'package:late_box_book/model/debt_model.dart';
 import 'package:late_box_book/model/user_dept.dart';
 import 'package:late_box_book/model/user_model.dart';
+import 'package:late_box_book/model/user_team.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_auth_service.dart';
 import 'package:late_box_book/services/firebase_storage_service.dart';
@@ -73,7 +75,7 @@ class UserRepository {
         userID, fileType, uploadFile);
   }
 
-  Future<List<String>> getUserTeam(String uid) async {
+  Future<List<UserTeamModel>> getUserTeam(String uid) async {
     return await _firestoreDBService.getUserTeam(uid);
   }
 

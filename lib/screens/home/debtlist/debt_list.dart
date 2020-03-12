@@ -112,8 +112,12 @@ class _DebtListState extends State<DebtList> {
                   context,
                   Color(0xFF17ead9),
                   state.currencyType != null ? state.currencyType : "TL"),
-              colorCard("Payment Debt", state.totalPayment.toDouble(), context,
-                  Color(0xFF6078ea),  state.currencyType != null ? state.currencyType : "TL"),
+              colorCard(
+                  "Payment Debt",
+                  state.totalPayment.toDouble(),
+                  context,
+                  Color(0xFF6078ea),
+                  state.currencyType != null ? state.currencyType : "TL"),
             ],
           ),
           SizedBox(
@@ -138,7 +142,7 @@ class _DebtListState extends State<DebtList> {
             animateFromLastPercent: true,
             percent: state.percent <= 100 ? state.percent / 100 : 1.0,
             center: Text(
-              state.percent.toString() + "%",
+              state.percent.toStringAsFixed(2) + "%",
               style: new TextStyle(fontSize: 12.0, color: Colors.white),
             ),
             linearStrokeCap: LinearStrokeCap.roundAll,
@@ -189,7 +193,7 @@ class _DebtListState extends State<DebtList> {
                     trailing: Text(
                       (data.debtModel.totalDept - data.debtModel.totalPayment)
                               .toString() +
-                          (" ${state.currencyType != null ? state.currencyType :" TL"}"),
+                          (" ${state.currencyType != null ? state.currencyType : " TL"}"),
                       style: TextStyle(
                           color: (data.debtModel.totalDept -
                                       data.debtModel.totalPayment) >

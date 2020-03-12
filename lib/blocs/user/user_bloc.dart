@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:late_box_book/common/locator.dart';
 import 'package:late_box_book/common/shared_pref_manager.dart';
 import 'package:late_box_book/model/user_model.dart';
+import 'package:late_box_book/model/user_team.dart';
 import 'package:late_box_book/repository/user_repository.dart';
 import './bloc.dart';
 
@@ -42,10 +43,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  void _setUserTeam(List<String> teams) {
+  void _setUserTeam(List<UserTeamModel> teams) {
     var currentTeam = _sharedPrefManager.getTeam();
     userTeam =
-        teams.firstWhere((t) => t == currentTeam, orElse: () => teams.first);
+        teams.firstWhere((t) => t.team == currentTeam, orElse: () => teams.first).team;
   }
 
   Stream<UserState> _mapAppUserLogOut() async* {

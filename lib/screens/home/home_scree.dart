@@ -5,6 +5,7 @@ import 'package:late_box_book/blocs/user/bloc.dart';
 import 'package:late_box_book/blocs/user/user_bloc.dart';
 import 'package:late_box_book/blocs/userdb/bloc.dart';
 import 'package:late_box_book/common/notification_handler.dart';
+import 'package:late_box_book/common/schedule_notification.dart';
 import 'package:late_box_book/widgets/home/bottomsheet/register_team_form.dart';
 import 'package:late_box_book/widgets/home/user_team_manager.dart';
 
@@ -65,14 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
         canvasColor: Theme.of(context).primaryColor,
         // sets the active color of the `BottomNavigationBar` if `Brightness` is light
         primaryColor: Theme.of(context).accentColor,
-        textTheme: Theme
-            .of(context)
-            .textTheme
-            .copyWith(caption: TextStyle(color: Colors.grey[500]),
-        ),
+        textTheme: Theme.of(context).textTheme.copyWith(
+              caption: TextStyle(color: Colors.grey[500]),
+            ),
       ),
       child: BottomNavigationBar(
-
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.black,
         items: <BottomNavigationBarItem>[

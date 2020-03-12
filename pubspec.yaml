@@ -32,12 +32,13 @@ dependencies:
   cloud_firestore: ^0.13.0+1
   firebase_storage: ^3.0.6
   percent_indicator: ^2.1.1+1
-  firebase_messaging: ^6.0.9
-  flutter_local_notifications: ^1.1.6
+  firebase_messaging: ^6.0.12
+  flutter_local_notifications: ^1.2.1
   image_picker: ^0.6.2+3
   shared_preferences: ^0.5.6+1
   toast: ^0.1.5
   searchable_dropdown: ^1.1.2
+  flutter_datetime_picker: 1.2.5
 
 dev_dependencies:
   flutter_test:

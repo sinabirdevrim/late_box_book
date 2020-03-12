@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:late_box_book/customwidget/lb_text_form.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class RegisterTeamForm extends StatefulWidget {
-  Function(String teamName, bool isCreate, String currencyType) _funcOnTeam;
-  String _teamName, _currencyType;
+  Function(String teamName, bool isCreate, String currencyType,
+      DateTime dailyStartTime) _funcOnTeam;
 
   RegisterTeamForm(this._funcOnTeam);
 
@@ -14,11 +15,16 @@ class RegisterTeamForm extends StatefulWidget {
 
 class _RegisterTeamFormState extends State<RegisterTeamForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isSwitched = false;
+  DateTime dailyStartTime;
+  String _teamName, _currencyType;
+
+  var txt = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
+      height: 550,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -33,77 +39,93 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
               LBTextFormField(
                 hintText: "Enter Team Name",
                 onSaved: (String value) {
-                  widget._teamName = value;
+                  _teamName = value;
                 },
                 labelText: "Team Name",
               ),
               SizedBox(
                 height: 15,
               ),
-              SearchableDropdown.single(
-                items: getCurrencyList(),
-                value: widget._currencyType,
-                hint: "Currency Type",
-                searchHint: "Select one",
-                underline: Container(
-                  height: 1.0,
-                  decoration: BoxDecoration(
-                      border:
-                      Border(bottom: BorderSide(color: Colors.grey))),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    widget._currencyType = value;
-                  });
-                },
-                isExpanded: true,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              InkWell(
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Color(0xFF17ead9), Color(0xFF6078ea)]),
-                      borderRadius: BorderRadius.circular(6.0),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color(0xFF6078ea).withOpacity(.3),
-                            offset: Offset(0.0, 8.0),
-                            blurRadius: 8.0)
-                      ]),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        _formSubmit(false);
-                      },
-                      child: Center(
-                        child: Text(
-                          "Join",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  horizontalLine(),
-                  Text("Or",
-                      style: TextStyle(
-                          fontSize: 16.0, fontFamily: "Poppins-Medium")),
-                  horizontalLine()
+                  Text("Scrum Master", style: TextStyle(fontSize: 12)),
+                  Switch(
+                    value: isSwitched,
+                    onChanged: (value) {
+                      setState(() {
+                        isSwitched = value;
+                      });
+                    },
+                  ),
                 ],
               ),
               SizedBox(
+                height: 15,
+              ),
+              Visibility(
+                visible: isSwitched,
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Daily Start Time",
+                            style: TextStyle(fontSize: 12)),
+                        TextField(
+                          readOnly: true,
+                          autofocus: false,
+                          controller: txt,
+                          decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.cyan),
+                              ),
+                              hintText: "Daily Time",
+                              hintStyle: TextStyle(
+                                  color: Colors.grey, fontSize: 12.0)),
+                          onTap: () {
+                            DatePicker.showTimePicker(context,
+                                theme: DatePickerTheme(
+                                  containerHeight: 210.0,
+                                ),
+                                showTitleActions: true, onConfirm: (time) {
+                              setState(() {
+                                dailyStartTime = time;
+                                txt.text =
+                                    '${time.hour}:${time.minute}:${time.second}';
+                              });
+                            },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SearchableDropdown.single(
+                      items: getCurrencyList(),
+                      value: _currencyType,
+                      hint: "Currency Type",
+                      searchHint: "Select one",
+                      underline: Container(
+                        height: 1.0,
+                        decoration: BoxDecoration(
+                            border:
+                                Border(bottom: BorderSide(color: Colors.grey))),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _currencyType = value;
+                          debugPrint(value);
+                        });
+                      },
+                      isExpanded: true,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
                 height: 20,
               ),
               InkWell(
@@ -123,7 +145,7 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: () {
-                        _formSubmit(true);
+                        _formSubmit(isSwitched);
                       },
                       child: Center(
                         child: Text(
@@ -153,7 +175,8 @@ class _RegisterTeamFormState extends State<RegisterTeamForm> {
 
   void _formSubmit(bool isCreate) {
     _formKey.currentState.save();
-    widget._funcOnTeam(widget._teamName, isCreate, widget._currencyType);
+    widget._funcOnTeam(
+        _teamName, isCreate, _currencyType, dailyStartTime);
   }
 
   List<DropdownMenuItem> getCurrencyList() {
