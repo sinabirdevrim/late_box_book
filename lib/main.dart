@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +15,9 @@ import 'screens/landing_screen.dart';
 void main() {
   BlocSupervisor.delegate = LBBlocDelegate();
   setupLocator();
+  runZoned(() {
+    runApp(MyApp());
+  }, onError: Crashlytics.instance.recordError);
   runApp(MyApp());
 }
 
@@ -36,7 +42,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => UserBloc()..add(UserIsLoginEvent()),
-      child:  MaterialApp(
+      child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: Constants.appName,
           theme: Constants.lightTheme,
