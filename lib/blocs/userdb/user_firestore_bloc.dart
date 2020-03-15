@@ -114,8 +114,18 @@ class UserFirestoreBloc extends Bloc<UserFirestoreEvent, UserFirestoreState> {
     } else {
       var teamDailyTime = _userModels.where((t) => t.isMaster).first.dailyTime;
       if (teamDailyTime != null) {
-        ScheduleNotificationManager().dailyNotification(Time(
-            teamDailyTime.hour, teamDailyTime.minute, teamDailyTime.second));
+        if (teamDailyTime.minute - 3 >= 0) {
+          ScheduleNotificationManager().dailyNotification(Time(
+              teamDailyTime.hour,
+              teamDailyTime.minute - 3,
+              teamDailyTime.second));
+        } else if (teamDailyTime.hour - 1 > 0) {
+          ScheduleNotificationManager().dailyNotification(
+              Time(teamDailyTime.hour - 1, 57, teamDailyTime.second));
+        } else {
+          ScheduleNotificationManager().dailyNotification(Time(
+              teamDailyTime.hour, teamDailyTime.minute, teamDailyTime.second));
+        }
       }
       yield UserListFirestoreState(_userModels, teamName);
     }
