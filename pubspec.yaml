@@ -33,7 +33,7 @@ dependencies:
   firebase_storage: ^3.0.6
   percent_indicator: ^2.1.1+1
   firebase_messaging: ^6.0.12
-  flutter_local_notifications: ^1.2.1
+  flutter_local_notifications: ^1.2.2
   image_picker: ^0.6.2+3
   shared_preferences: ^0.5.6+1
   toast: ^0.1.5

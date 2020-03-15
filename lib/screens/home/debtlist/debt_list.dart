@@ -29,6 +29,16 @@ class _DebtListState extends State<DebtList> {
     return BlocBuilder(
         bloc: _userFirestoreBloc,
         builder: (context, UserFirestoreState state) {
+          var dailyTime = state.userModelList != null
+              ? state.userModelList.where((t) => t.isMaster).first.dailyTime
+              : null;
+          var teamInfo = dailyTime != null
+              ? state.teamName +
+                  " - " +
+                  dailyTime.hour.toString() +
+                  ":" +
+                  dailyTime.minute.toString()
+              : state.teamName;
           return Scaffold(
             appBar: AppBar(
               title: Column(
@@ -39,7 +49,7 @@ class _DebtListState extends State<DebtList> {
                     'Home Page',
                   ),
                   Text(
-                    state.teamName,
+                    teamInfo,
                     style: TextStyle(
                       color: Colors.grey.shade400,
                       fontWeight: FontWeight.w700,
